@@ -1,0 +1,16 @@
+I've put Midnight Grid, my dark TIGSource theme, on GitHub so anyone can install it and contribute improvements. It's free and open source under the MIT license.
+
+[b]How to install[/b]
+
+1. Install Stylus for your browser: [url=https://chromewebstore.google.com/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne]Chrome / Edge / Brave[/url] or [url=https://addons.mozilla.org/firefox/addon/styl-us/]Firefox[/url].
+2. Open [url=https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css]Install Midnight Grid[/url] in the same browser.
+3. Click [b]Install style[/b] and leave [b]Check for updates[/b] enabled.
+4. Refresh TIGSource.
+
+Future releases will be available through Stylus's update checks. You don't need a GitHub account or to copy any CSS manually. The theme changes the forum's appearance in your own browser.
+
+If you're using my old style named "forums.tigsource.com", disable that copy first so the styles don't overlap. You can switch back to the original forum appearance at any time by disabling Midnight Grid in Stylus.
+
+[url=https://github.com/michaelplzno/tigsource-midnight-grid]Source code, full instructions, and bug reports[/url]
+
+Feedback and contributions are welcome!
