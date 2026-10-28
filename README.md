@@ -56,6 +56,10 @@ The theme targets TIGSource's existing SMF markup. Site changes can require sele
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for local development and a manual verification checklist. There is no build step: the `.user.css` file is the source and the installable release.
 
+Three [offline page fixtures](tests/fixtures/README.md) let contributors preview
+the current CSS against the forum index, a board, and a topic. Run
+`python tools/preview.py` from the repository root and open `http://127.0.0.1:8914/`.
+
 See [docs/PUBLISHING.md](docs/PUBLISHING.md) for repository setup and future releases.
 
 ## License and credits

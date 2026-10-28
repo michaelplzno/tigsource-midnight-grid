@@ -1,0 +1,177 @@
+html { height: 100%; margin-bottom: 1px; }
+
+body { margin: 0px; padding: 0px; }
+
+#page_bg { height: 100%; padding: 0px; margin-bottom: 1px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/bg.png") repeat rgb(105, 105, 105); }
+
+#wrapper { margin: 0px auto; position: relative; min-width: 770px; max-width: 1100px; }
+
+#shadow-l { background: url("/fixtures/assets/legacy/Themes/tigsource/images/shadow-l.png") 0px 0px repeat-y; padding-left: 6px; position: relative; }
+
+#shadow-r { background: url("/fixtures/assets/legacy/Themes/tigsource/images/shadow-r.png") 100% 0px repeat-y; padding-right: 6px; position: relative; }
+
+* html #shadow-l { float: left; }
+
+* html #shadow-r { float: right; }
+
+#mainbody { margin: 0px; padding: 0px 5px; background: rgb(255, 255, 255); }
+
+p { margin-top: 0px; margin-bottom: 5px; }
+
+a img { border: 0px; }
+
+.post img:active { max-width: 100%; }
+
+.quote { color: rgb(0, 0, 0); background-color: rgb(215, 218, 236); border: 1px solid rgb(0, 0, 0); margin: 1px; padding: 1px; font-size: 12px; line-height: 1.4em; }
+
+.code { font-family: "courier new", "times new roman", monospace; font-size: 12px; line-height: 1.3em; border: 1px solid rgb(0, 0, 0); margin: 1px auto; padding: 1px; width: 99%; white-space: nowrap; overflow: auto; max-height: 24em; }
+
+.quoteheader, .codeheader { color: rgb(0, 0, 0); text-decoration: none; font-style: normal; font-weight: bold; font-size: 12px; line-height: 1.2em; }
+
+.help { cursor: help; }
+
+.editor { width: 96%; }
+
+.highlight { background-color: yellow; font-weight: bold; color: black; }
+
+.windowbg, tr.windowbg td { padding: 5px; background: rgb(238, 238, 238); border-bottom: 1px solid rgb(238, 238, 238); }
+
+.windowbg2, tr.windowbg2 td { padding: 5px; background: rgb(252, 252, 252); border-bottom: 1px solid rgb(238, 238, 238); }
+
+.windowbg3, tr.windowbg3 td { padding: 5px; background: rgb(240, 240, 240); }
+
+.calendar_today { }
+
+table.nopad .titlebg, tr.titlebg th, tr.titlebg td, .titlebg2, tr.titlebg2 th, tr.titlebg2 td, tr td.titlebg { font-size: 100%; font-weight: bold; padding: 4px; }
+
+.titlebg, .titlebg a:link, .titlebg a:visited { }
+
+.titlebg a:hover { }
+
+.titlebg2 a:link, .titlebg2 a:visited { }
+
+.titlebg2 a:hover { }
+
+.titlebg, .titlebg2 { background: rgb(221, 221, 221); }
+
+.bordercolor { border: 1px solid rgb(204, 204, 204); }
+
+.tborder { border: 1px solid rgb(204, 204, 204); padding: 1px; }
+
+.catbg, .catbg2, .catbg3 { background: url("/fixtures/assets/legacy/Themes/tigsource/images/cat-bg.png") 0px -10px repeat-x rgb(239, 239, 239); border-bottom: 2px solid rgb(204, 204, 204); }
+
+.smalltext { font-size: 11px; font-family: verdana, sans-serif; }
+
+.middletext { line-height: 18px; text-indent: 10px; }
+
+.normaltext { font-size: 12px; }
+
+.largetext { font-size: 14px; }
+
+.post, .personalmessage { width: 100%; overflow: auto; line-height: 1.3em; }
+
+.signature { width: 100%; overflow: auto; padding-bottom: 3px; line-height: 1.3em; }
+
+.error { color: red; }
+
+#header { position: relative; height: 111px; overflow: hidden; background: url("/fixtures/assets/legacy/Themes/tigsource/images/header-bg.png") repeat-x rgb(35, 40, 51); }
+
+#header-l { height: 111px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/header-l.png") 0px 0px no-repeat; position: relative; padding-left: 16px; }
+
+#header-r { height: 111px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/header-r.png") 100% 0px no-repeat; position: relative; padding-right: 16px; }
+
+#logo-bg, #logo-bg a { position: absolute; top: 0px; left: 0px; display: block; width: 440px; height: 111px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/logo-bg.png") no-repeat; padding: 30px 0px 0px 30px; color: rgb(153, 153, 153); font-family: Arial, Helvetica, sans-serif; font-size: 24px; line-height: 24px; font-weight: bold; }
+
+#logo, #logo a { position: absolute; top: 0px; left: 0px; display: block; width: 440px; height: 111px; background: none no-repeat; padding: 30px 0px 0px 30px; color: rgb(153, 153, 153); font-family: Arial, Helvetica, sans-serif; font-size: 24px; line-height: 24px; font-weight: bold; }
+
+#news { height: 80px; padding-top: 15px; overflow: hidden; margin-left: 485px; margin-bottom: 10px; margin-right: 0px; color: rgb(255, 255, 255); }
+
+#useropts { margin: 0px 50px 0px 0px; list-style: none; padding: 0px; }
+
+.avatar_t { height: 65px; width: 65px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; }
+
+div.profile_info { margin-left: 80px; }
+
+td.smalltext { font-weight: normal; }
+
+#toolbar { margin: 0px; padding: 0px; height: 28px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/toolbar-bg.png") repeat-x; position: relative; }
+
+#nav { margin: 0px 0px 0px 20px; padding: 0px; height: 28px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/toolbar-div.png") 0px 0px no-repeat; }
+
+#nav ul { padding: 0px; margin: 0px; }
+
+#nav li { margin: 0px; padding: 0px; float: left; display: block; background: url("/fixtures/assets/legacy/Themes/tigsource/images/toolbar-div.png") 100% 0px no-repeat; }
+
+#nav a { text-decoration: none; cursor: pointer; font-weight: bold; }
+
+#nav li a { display: block; float: left; height: 28px; line-height: 28px; padding: 0px 15px; color: rgb(153, 153, 153); }
+
+#nav a:hover { color: rgb(238, 238, 238); background: none 0px 0px repeat-x rgb(244, 177, 44); }
+
+#nav a:active { color: rgb(51, 51, 51); }
+
+#showcase { background: rgb(255, 255, 255); color: rgb(68, 68, 68); padding: 0px; margin: 0px; }
+
+#showcase ul { list-style: none; margin: 0px; padding: 0px; }
+
+#showcase li { border-bottom: 1px dotted rgb(183, 187, 199); padding-bottom: 0px; margin-bottom: 2px; }
+
+.userinfo { background: url("/fixtures/assets/legacy/Themes/tigsource/images/showcase-bgl.png") 100% 0px no-repeat rgb(255, 255, 255); width: 350px; float: left; padding: 10px 0px 10px 10px; }
+
+.searchfield { background: rgb(255, 255, 255); text-align: right; padding: 15px 20px 10px 5px; }
+
+#footer { margin: 0px; padding: 40px 0px 0px 30px; background: url("/fixtures/assets/legacy/Themes/tigsource/images/footer-bg.png") repeat-x; height: 83px; color: rgb(238, 238, 238); text-align: center; }
+
+#footer-l { background: url("/fixtures/assets/legacy/Themes/tigsource/images/footer-bgl.png") 0px 0px no-repeat; height: 83px; padding-left: 251px; }
+
+#footer-r { background: url("/fixtures/assets/legacy/Themes/tigsource/images/footer-bgr.png") 100% 0px no-repeat; height: 83px; padding-right: 49px; }
+
+#footer a { color: rgb(255, 255, 255); }
+
+#footer a:hover { color: rgb(0, 0, 0); }
+
+#footer2 { margin: 0px 30px 10px 0px; text-align: right; color: rgb(153, 153, 153); }
+
+span.pathway { display: block; height: 16px; line-height: 16px; vertical-align: middle; margin-top: 5px; margin-bottom: 10px; font-weight: bold; }
+
+span.pathway img { margin: 0px 10px; vertical-align: middle; }
+
+div#pathway { margin-bottom: 10px; padding-left: 8px; }
+
+fieldset { border: 0px; padding: 5px 0px; }
+
+body { line-height: 125%; font-family: Verdana, Helvetica, sans-serif; font-size: 12px; }
+
+a { color: rgb(0, 96, 183); }
+
+a:hover { color: rgb(0, 0, 0); }
+
+.small, .modifydate, .createdate, div.mosimage_caption { font-size: 100%; }
+
+#nav a, #inset a { font-size: 110%; }
+
+#nav, span.pathway, .small, .createdate, .modifydate, #inset { font-family: Arial, Helvetica, sans-serif; font-weight: bold; }
+
+a:link, a:visited { text-decoration: none; }
+
+a:hover { text-decoration: none; }
+
+h1 { padding-bottom: 5px; }
+
+h2 { padding-bottom: 5px; }
+
+h3 { padding-bottom: 0px; }
+
+h4 { padding-bottom: 5px; }
+
+.small { font-weight: bold; color: rgb(153, 153, 153); }
+
+.modifydate { height: 20px; vertical-align: bottom; font-weight: bold; color: rgb(153, 153, 153); }
+
+.createdate { height: 20px; font-weight: bold; vertical-align: top; padding-bottom: 5px; padding-top: 0px; color: rgb(153, 153, 153); }
+
+.clr { clear: both; }
+
+form { border: 0px; margin: 0px; padding: 0px; }
+
+#ajax_in_progress { background: rgb(50, 205, 50); color: white; text-align: center; font-weight: bold; font-size: 18pt; padding: 3px; width: 100%; position: fixed; top: 0px; left: 0px; }

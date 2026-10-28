@@ -1,0 +1,20 @@
+{
+  "description": "Anonymized SMF markup from author-supplied MHTML captures; current theme loaded separately.",
+  "pages": [
+    {
+      "page": "index.html",
+      "source": "https://forums.tigsource.com/index.php",
+      "anonymized": true
+    },
+    {
+      "page": "board.html",
+      "source": "https://forums.tigsource.com/index.php?board=17.0",
+      "anonymized": true
+    },
+    {
+      "page": "topic.html",
+      "source": "https://forums.tigsource.com/index.php?topic=60804.0",
+      "anonymized": true
+    }
+  ]
+}

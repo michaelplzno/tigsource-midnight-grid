@@ -13,6 +13,21 @@ For a hosted raw-file or local-file development workflow, see [Stylus's UserCSS 
 
 ## Verify changes
 
+Use the [three offline fixtures](tests/fixtures/README.md) to check the forum
+index, Townhall board, and Neofeud topic against the CSS you are editing:
+
+```sh
+python tools/preview.py
+python -m unittest discover -s tests -v
+```
+
+The first command starts a local preview at `http://127.0.0.1:8914/`; leave it
+running and use a second terminal for the checks. Refresh a fixture after
+editing the theme. Archived styles are excluded, so the preview always tests
+the current `.user.css` file. No Stylus installation or third-party packages
+are needed. The fixtures contain anonymized text and media placeholders;
+also check the live forum before releasing a layout change.
+
 - Check the forum index, a board's topic list, and a topic with multiple posts.
 - Check wide desktop, medium, and narrow viewports, especially around the 1850px, 1150px, 900px, and 640px breakpoints.
 - Check logged-out pages and, if you have an account, logged-in controls and the post editor.

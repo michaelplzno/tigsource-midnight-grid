@@ -1,6 +1,9 @@
 # Original Stylus backups can contain settings and unrelated styles.
 stylus-*.json
 dist/
+*.mhtml
+tests/.local/
+__pycache__/
 
 # Local editor and OS files.
 .vscode/
