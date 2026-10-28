@@ -4,9 +4,7 @@ A dark, responsive theme for the [TIGSource forums](https://forums.tigsource.com
 
 **[Install Midnight Grid](https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css)** · [Report a bug](https://github.com/michaelplzno/tigsource-midnight-grid/issues)
 
-Midnight Grid turns the forum index into a responsive grid, gives topics and posts more room, and replaces many small interface icons with embedded SVGs. It uses system fonts and adds no remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
-
-*Earlier preview supplied by the author. The current defaults use a darker palette.*
+Midnight Grid gives the forum aligned category sections, responsive board rows, readable posts, and embedded SVG interface icons. It uses system fonts and adds no remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
 
 ## Install
 
@@ -40,11 +38,11 @@ To restore the original forum appearance, disable or remove Midnight Grid in Sty
 Edit the style in Stylus and find the first `:root` block:
 
 ```css
---tig-width: 2400px;
---tig-text-scale: 1.4;
+--tig-width: 1600px;
+--tig-text-scale: 1.1;
 ```
 
-`--tig-width` controls the maximum content width. `--tig-text-scale` controls text sizing; for example, `1.2` is smaller than the default `1.4`. Color variables are nearby, although some later rules set colors directly. Local edits may be replaced by a future update, so keep a copy of your changes.
+`--tig-width` controls the maximum content width. `--tig-text-scale` controls text sizing; for example, `1.0` is smaller than the default `1.1`. Color variables are nearby. Local edits may be replaced by a future update, so keep a copy of your changes.
 
 ## Compatibility
 

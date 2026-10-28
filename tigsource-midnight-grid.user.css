@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           TIGSource — Midnight Grid
 @namespace      https://github.com/michaelplzno/tigsource-midnight-grid
-@version        1.0.0
+@version        1.1.0
 @description    A dark, responsive grid theme for the TIGSource forums.
 @author         michaelplzno
 @license        MIT
@@ -10,708 +10,539 @@
 @updateURL      https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css
 ==/UserStyle== */
 @-moz-document url-prefix("https://forums.tigsource.com/") {
-    /* TIGSource — Midnight Grid
-   Paste into a Stylus style scoped to forums.tigsource.com.
-   CSS only. No remote fonts, scripts, or external assets.
-   Adjust these four colors and the width to taste. */
-    /* TIGSource — Midnight Grid
-   Paste into a Stylus style scoped to forums.tigsource.com.
-   CSS only. No remote fonts, scripts, or external assets.
-   Adjust these four colors and the width to taste. */
+    /* Theme tokens. Keep sizing in one place; SVG artwork is embedded below. */
     :root {
-        --tig-bg: #0d1118;
-        --tig-paper: #151c26;
-        --tig-ink: #e1e8ef;
-        --tig-link: #84cde5;
-        --tig-muted: #a1b1c1;
-        --tig-line: #2b3949;
-        --tig-soft: #1b2633;
-        --tig-width: 2400px;
-        --tig-text-scale: 1.4;
-        /* 1.2 = 120%, 1.4 = 140% */
+        color-scheme: dark;
+        --tig-bg: #0d131c;
+        --tig-paper: #16202c;
+        --tig-ink: #e2eaf3;
+        --tig-link: #9ddbea;
+        --tig-muted: #a5b7ca;
+        --tig-line: #304156;
+        --tig-soft: #1c2a3a;
+        --tig-header: #223247;
+        --tig-width: 1600px;
+        --tig-text-scale: 1.1;
+        --tig-control-height: 40px;
     }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
     body#page_bg {
-        background: var(--tig-bg) !important;
-        color: var(--tig-ink);
-        font: calc(15px * var(--tig-text-scale))/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
         margin: 0 !important;
         padding: 24px !important;
         height: auto;
+        background: var(--tig-bg) !important;
+        color: var(--tig-ink);
+        font: calc(15px * var(--tig-text-scale))/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
     }
+
     #wrapper {
         min-width: 0;
         max-width: var(--tig-width);
         margin: auto;
     }
+
     #shadow-l,
     #shadow-r {
         background: none;
         padding: 0;
     }
+
     #mainbody {
         padding: 0 24px 24px;
-        background: var(--tig-paper);
-        border-radius: 0 0 16px 16px;
+        background: #111a26;
+        border-radius: 0 0 14px 14px;
     }
+
     a {
         color: var(--tig-link);
         text-decoration: none;
         text-underline-offset: 3px;
     }
+
     a:hover {
-        color: #b5eaff;
+        color: #d2f3ff;
         text-decoration: underline;
     }
+
     a:focus-visible,
     input:focus-visible,
     textarea:focus-visible,
     select:focus-visible,
     button:focus-visible {
-        outline: 3px solid #c07918;
+        outline: 2px solid #f0bf78;
         outline-offset: 3px;
     }
-    /* Retain the original logo; remove the old decorative chrome. */
+
+    /* Header and navigation retain the original TIGSource logo. */
     #header-l,
-    #header-r {
-        background: #111923;
-        padding: 0;
-        height: auto;
-        border-radius: 16px 16px 0 0;
-    }
+    #header-r,
     #header {
-        background: #111923;
-        min-height: 111px;
         height: auto;
-        border-radius: 16px 16px 0 0;
-    }
-    #logo-bg,
-    #logo-bg a {
         padding: 0;
+        background: #172433;
+        border-radius: 14px 14px 0 0;
     }
+
+    #header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        min-height: 111px;
+    }
+
+    #logo-bg {
+        position: relative;
+        flex: 0 0 440px;
+        width: 440px;
+        height: 111px;
+        padding: 0;
+        background-size: contain;
+    }
+
+    #logo-bg a {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        background-size: contain !important;
+    }
+
     #news {
+        height: auto;
+        min-height: 0;
+        margin: 0;
+        padding: 16px 24px 16px 0;
+        overflow-wrap: anywhere;
         font-size: calc(13px * var(--tig-text-scale));
-        line-height: 1.5;
-        height: auto;
-        min-height: 70px;
-        padding: 18px 24px 16px 0;
-        margin: 0 0 0 490px;
+        line-height: 1.6;
     }
+
     #news a {
-        color: #f8cf81;
+        color: #f1ce8d;
     }
+
     #toolbar {
-        background: none;
         height: auto;
+        padding: 12px 0;
         border-bottom: 1px solid var(--tig-line);
-        padding: 10px 0;
-    }
-    #nav {
         background: none;
+    }
+
+    #nav {
         height: auto;
         margin: 0;
+        background: none;
     }
+
     #nav ul {
         display: flex;
         flex-wrap: wrap;
         gap: 4px;
     }
+
     #nav li {
-        background: none;
         float: none;
+        background: none;
     }
+
     #nav li a {
+        display: flex;
+        align-items: center;
         float: none;
         height: auto;
-        padding: 8px 14px;
-        line-height: 1.4;
-        font: 600 calc(14px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
+        min-height: var(--tig-control-height);
+        padding: 9px 12px;
+        border-radius: 6px;
         color: var(--tig-ink);
-        border-radius: 7px;
+        font: 600 calc(14px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
     }
+
     #nav li a:hover {
         background: var(--tig-soft);
         color: var(--tig-link);
         text-decoration: none;
     }
+
+    /* Compact, predictable account and search columns. */
     #showcase {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+        align-items: start;
         gap: 24px;
-        padding: 22px 0;
-        margin-bottom: 16px;
-        border-bottom: 1px solid var(--tig-line);
+        margin: 20px 0 24px;
+        padding: 20px;
+        border: 1px solid var(--tig-line);
+        border-radius: 10px;
+        background: var(--tig-paper);
+        color: var(--tig-ink);
     }
+
     #showcase .clr {
         display: none;
     }
+
     .userinfo {
-        background: none;
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        gap: 14px;
         float: none;
         width: auto;
-        flex: 1;
-        padding: 0;
         min-width: 0;
+        padding: 0;
+        background: none;
     }
+
+    .userinfo > div:has(> .avatar_t) {
+        float: none !important;
+        margin: 0 !important;
+    }
+
+    .userinfo:not(:has(.avatar_t)) {
+        display: block;
+    }
+
+    div.profile_info {
+        min-width: 0;
+        margin: 0;
+    }
+
     .profile_info h3 {
-        margin: 0 0 8px;
-        font-size: calc(17px * var(--tig-text-scale));
+        margin: 0 0 6px;
+        font-size: calc(18px * var(--tig-text-scale));
+        line-height: 1.35;
+        overflow-wrap: anywhere;
     }
+
     #useropts {
         margin: 0;
         font-size: calc(13px * var(--tig-text-scale));
     }
+
     #showcase li {
-        border: 0;
         margin: 3px 0;
+        border: 0;
     }
-    .searchfield {
-        background: none;
-        padding: 0;
-        flex: 1;
-        font-size: calc(12px * var(--tig-text-scale));
-        color: var(--tig-muted);
-        max-width: 480px;
-    }
+
     .avatar_t {
-        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
         object-fit: contain;
     }
+
+    .searchfield {
+        min-width: 0;
+        max-width: none;
+        padding: 0;
+        background: none;
+        color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale));
+        line-height: 1.65;
+    }
+
+    #showcase .searchfield form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 6px 8px;
+        width: 100%;
+        max-width: 440px;
+        margin: 0 0 12px auto !important;
+    }
+
+    #showcase .searchfield form > br {
+        display: none;
+    }
+
+    #showcase .searchfield form > a {
+        grid-column: 1 / -1;
+        justify-self: end;
+    }
+
+    #showcase .searchfield input {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        margin: 0 !important;
+    }
+
+    #showcase .searchfield > form + br,
+    #showcase .searchfield > br + br {
+        display: none;
+    }
+
+    .searchfield > span[style*="font-size: 10px"] {
+        font-size: inherit !important;
+    }
+
+    /* A single type and control scale across index, boards, and threads. */
     input,
     textarea,
     select,
     button {
-        font: inherit;
-        color: var(--tig-ink);
         max-width: 100%;
-        box-sizing: border-box;
+        min-width: 0;
+        color: var(--tig-ink);
+        font: inherit;
     }
+
     input[type="text"],
     input[type="password"],
     input[type="search"],
     textarea,
     select {
-        border: 1px solid #b9c6ce;
-        border-radius: 7px;
-        background: var(--tig-soft);
-        padding: 8px 10px;
+        padding: 9px 11px;
+        border: 1px solid #496078;
+        border-radius: 6px;
+        background: var(--tig-bg);
     }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="search"],
+    select:not([multiple]),
     input[type="submit"],
     input[type="button"],
     button {
+        height: var(--tig-control-height);
+        min-height: var(--tig-control-height);
+        font-size: calc(14px * var(--tig-text-scale));
+        line-height: 1.25;
+    }
+
+    input[type="submit"],
+    input[type="button"],
+    button {
+        padding: 9px 14px;
+        border: 1px solid #4c849c;
+        border-radius: 6px;
         background: #285e76;
-        color: #ffffff;
-        border: 1px solid var(--tig-link);
-        border-radius: 7px;
-        padding: 8px 14px;
+        color: #fff;
         cursor: pointer;
     }
-    span.pathway {
-        height: auto;
-        line-height: 1.7;
-        margin: 12px 0 18px;
-        font: 600 calc(14px * var(--tig-text-scale))/1.7 system-ui, sans-serif;
+
+    input[type="submit"]:hover,
+    input[type="button"]:hover,
+    button:hover {
+        background: #34738c;
     }
-    .pathway img {
-        opacity: .55;
-    }
+
     .smalltext,
+    small,
     .normaltext,
-    .middletext,
-    small {
+    .middletext {
         font-family: inherit;
+        line-height: 1.6;
     }
+
     .smalltext,
     small {
-        font-size: calc(12px * var(--tig-text-scale));
-        line-height: 1.6;
         color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale));
     }
+
     .normaltext,
     .middletext {
         font-size: calc(14px * var(--tig-text-scale));
-        line-height: 1.6;
     }
+
     .largetext {
         font-size: calc(18px * var(--tig-text-scale));
     }
+
+    span.pathway {
+        display: block;
+        height: auto;
+        margin: 16px 0;
+        font: 600 calc(14px * var(--tig-text-scale))/1.7 system-ui, sans-serif;
+    }
+
     .tborder,
     .tborder2 {
+        margin-bottom: 20px !important;
+        padding: 0;
         border: 1px solid var(--tig-line);
         border-radius: 10px;
-        padding: 0;
-        margin-bottom: 18px !important;
     }
+
     .bordercolor {
         border: 0;
         border-collapse: separate;
         border-spacing: 0;
     }
+
     .catbg,
     .catbg2,
     .catbg3,
     .titlebg,
     .titlebg2 {
-        background: #202d3c;
-        color: var(--tig-ink);
         border-bottom: 1px solid var(--tig-line);
+        background: var(--tig-header);
+        color: var(--tig-ink);
         font-weight: 600;
     }
-    .catbg2 {
-        padding: 13px 16px !important;
-        font-size: calc(17px * var(--tig-text-scale));
-        border-radius: 10px 10px 0 0;
+
+    .catbg a,
+    .catbg2 a,
+    .catbg3 a {
+        color: var(--tig-ink);
     }
+
+    .catbg2,
     .catbg3,
     .catbg > td,
     .titlebg,
     .titlebg2 {
-        padding: 10px 12px !important;
+        padding: 10px 14px !important;
         font-size: calc(13px * var(--tig-text-scale));
     }
+
     .windowbg,
     .windowbg2,
     .windowbg3,
     tr.windowbg td,
     tr.windowbg2 td {
-        background: var(--tig-paper);
+        padding: 14px;
         border-bottom: 1px solid var(--tig-line);
-        padding: 14px 12px;
-    }
-    /* Index: improve descriptions without altering user-written post styling. */
-    #mainbody > .tborder > .bordercolor > tbody > tr > td:has(a[name^="b"]) > span {
-        margin: 0 !important;
-        font-size: calc(14px * var(--tig-text-scale)) !important;
-        color: var(--tig-muted);
-    }
-    #mainbody > .tborder > .bordercolor a[name^="b"] {
-        font-size: calc(18px * var(--tig-text-scale));
-        font-weight: 650;
-    }
-    #mainbody > .tborder > .bordercolor td[colspan] {
-        background: var(--tig-soft);
-        padding: 8px 12px;
-    }
-    /* Board topic table. The structural selector distinguishes it from thread posts. */
-    #quickModForm > .tborder2 {
-        overflow-x: auto;
-    }
-    #quickModForm > .tborder2 > table {
-        min-width: 760px;
-    }
-    #quickModForm > .tborder2 > table > tbody > tr:hover > td:not(.catbg3) {
-        background: var(--tig-soft);
-    }
-    #quickModForm span[id^="msg_"] > a {
-        font-size: calc(15px * var(--tig-text-scale));
-        font-weight: 600;
-    }
-    #quickModForm small[id^="pages"] {
-        display: inline-block;
-        margin-top: 4px;
-    }
-    /* Thread: each original post becomes a spaced panel. */
-    #quickModForm > table.bordercolor {
-        background: transparent;
-    }
-    #quickModForm > table.bordercolor > tbody > tr > td {
-        padding: 0 0 18px !important;
-    }
-    #quickModForm > table.bordercolor > tbody > tr > td > table > tbody > tr > td {
-        border: 1px solid var(--tig-line);
-        border-radius: 10px;
-        padding: 18px;
-    }
-    table:has(> tbody > tr > td > .post) > tbody > tr > td[rowspan="2"] {
-        width: 160px;
-        padding: 8px 20px 8px 4px;
-        border-right: 1px solid var(--tig-line);
-        overflow-wrap: anywhere;
-    }
-    td:has(> .post),
-    td:has(> .signature) {
-        padding-left: 24px;
-    }
-    .post,
-    .personalmessage {
-        font-size: calc(16px * var(--tig-text-scale));
-        line-height: 1.75;
-        overflow-wrap: anywhere;
-        padding: 12px 0;
-    }
-    .post img,
-    .signature img {
-        max-width: 100%;
-        height: auto;
-    }
-    .post iframe,
-    .post video {
-        max-width: 100%;
-    }
-    .avatar {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-    }
-    .signature {
-        font-size: calc(12px * var(--tig-text-scale));
-        line-height: 1.5;
-        padding-top: 12px;
-        color: var(--tig-muted);
-    }
-    .quote {
-        background: var(--tig-soft);
-        color: var(--tig-ink);
-        border: 0;
-        border-left: 3px solid #7fa5b5;
-        border-radius: 0 6px 6px 0;
-        padding: 14px 18px;
-        font-size: calc(14px * var(--tig-text-scale));
-        line-height: 1.65;
-        margin: 8px 0;
-    }
-    .quoteheader,
-    .codeheader {
-        color: var(--tig-muted);
-        font-size: calc(12px * var(--tig-text-scale));
-        line-height: 1.5;
-        margin-top: 10px;
-    }
-    .code,
-    pre {
-        background: var(--tig-soft);
-        border: 1px solid var(--tig-line);
-        border-radius: 6px;
-        padding: 12px;
-        font: calc(13px * var(--tig-text-scale))/1.6 Consolas, monospace;
-        box-sizing: border-box;
-    }
-    .hrcolor {
-        border: 0;
-        border-top: 1px solid var(--tig-line);
-        margin: 12px 0;
-    }
-    /* Image-based SMF action buttons stay intact and clickable. */
-    .postbuttons {
-        white-space: normal;
-    }
-    .postbuttons a {
-        display: inline-block;
-        margin: 3px;
-        padding: 6px;
-        border: 1px solid var(--tig-line);
-        border-radius: 5px;
-        background: var(--tig-soft);
-        vertical-align: middle;
-    }
-    .postbuttons img {
-        vertical-align: middle;
-    }
-    a.navPages {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 4px;
-    }
-    a.navPages:hover {
-        background: var(--tig-soft);
-    }
-    #footer-l,
-    #footer-r,
-    #footer {
-        background: none;
-        height: auto;
-        padding: 12px;
-        color: var(--tig-muted);
-    }
-    #footer,
-    #footer2 {
-        font-size: calc(12px * var(--tig-text-scale));
-    }
-    #footer a {
-        color: var(--tig-link);
-    }
-    @media (max-width: 900px) {
-        body#page_bg {
-            padding: 12px !important;
-        }
-        #mainbody {
-            padding: 0 14px 18px;
-        }
-        #header {
-            display: flex;
-            flex-direction: column;
-        }
-        #logo-bg {
-            position: relative;
-            width: 100%;
-            max-width: 440px;
-            height: 111px;
-        }
-        #logo-bg a {
-            width: 100%;
-        }
-        #news {
-            margin: 0;
-            padding: 0 20px 18px;
-            min-height: 0;
-        }
-        #showcase {
-            gap: 16px;
-        }
-        .searchfield {
-            max-width: 340px;
-        }
-    }
-    @media (max-width: 640px) {
-        body#page_bg {
-            padding: 0 !important;
-        }
-        #header,
-        #header-l,
-        #header-r {
-            border-radius: 0;
-        }
-        #logo-bg,
-        #logo-bg a {
-            background-size: contain;
-        }
-        #mainbody {
-            padding: 0 10px 16px;
-        }
-        #nav li a {
-            padding: 8px 10px;
-        }
-        #showcase {
-            flex-direction: column;
-            gap: 16px;
-        }
-        .searchfield {
-            text-align: left;
-            max-width: 100%;
-            width: 100%;
-        }
-        .searchfield input[type="text"] {
-            max-width: 65%;
-        }
-        /* Wide board and index tables scroll within their own panels. */
-        #mainbody > div.tborder:has(> table.bordercolor) {
-            overflow-x: auto;
-        }
-        #mainbody > div.tborder > table.bordercolor {
-            min-width: 650px;
-        }
-        #quickModForm > table.bordercolor > tbody > tr > td > table > tbody > tr > td {
-            padding: 10px;
-        }
-        table:has(> tbody > tr > td > .post) > tbody {
-            display: block;
-        }
-        table:has(> tbody > tr > td > .post) > tbody > tr {
-            display: block;
-        }
-        table:has(> tbody > tr > td > .post) > tbody > tr > td {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 8px 0;
-        }
-        table:has(> tbody > tr > td > .post) > tbody > tr > td[rowspan="2"] {
-            border-right: 0;
-            border-bottom: 1px solid var(--tig-line);
-        }
-        .post {
-            font-size: calc(15px * var(--tig-text-scale));
-        }
-        .postbuttons a {
-            margin: 2px;
-            padding: 4px;
-        }
-        .catbg3,
-        .catbg > td {
-            padding: 8px !important;
-        }
-    }
-    /* Keep the legacy topic legend and board jump menu inside phone screens. */
-    @media (max-width: 640px) {
-        table.titlebg2:has(select) > tbody,
-        table.titlebg2:has(select) > tbody > tr,
-        table.titlebg2:has(select) > tbody > tr > td {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        table.titlebg2:has(select) select {
-            width: 100%;
-        }
-    }
-    /* Tighten the icon column in each post heading. */
-    td:has(> .post) > table > tbody > tr > td:first-child {
-        width: 24px;
-    }
-    /* MIDNIGHT GRID: wide screen structure. No markup or script changes. */
-    :root {
-        color-scheme: dark;
-    }
-    #mainbody {
-        background: #101720;
-    }
-    body#page_bg {
-        padding: 24px 32px !important;
-    }
-    #header-l,
-    #header-r,
-    #header {
-        background: #151f2c;
-    }
-    #toolbar {
-        padding: 12px 0;
-    }
-    #nav li a {
-        color: #d7e3ef;
-    }
-    #nav li a:hover {
-        background: #26384b;
-    }
-    #showcase {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        padding: 20px;
-        border: 1px solid var(--tig-line);
-        border-radius: 12px;
         background: var(--tig-paper);
-        margin: 20px 0;
     }
-    .searchfield {
-        max-width: none;
-    }
-    #showcase .searchfield > br {
-        display: none;
-    }
-    #showcase .searchfield form {
-        margin-bottom: 12px !important;
-    }
-    #showcase .searchfield {
-        line-height: 1.8;
-    }
-    input[type="submit"],
-    input[type="button"],
-    button {
-        background: #285e76;
-        color: white;
-        border-color: #4c849c;
-    }
-    input[type="text"],
-    input[type="password"],
-    input[type="search"],
-    textarea,
-    select {
-        background: #101720;
-        border-color: #42566b;
-        color: var(--tig-ink);
-    }
-    .postbuttons a {
-        background: #263345;
-        border-color: #405267;
-    }
-    .catbg a,
-    .catbg2 a,
-    .catbg3 a {
-        color: #d7e9f7;
-    }
-    .quote {
-        color: #dce6ee;
-    }
-    /* Each forum category occupies a grid tile. Child-board rows remain directly
-   beneath their parent, keeping SMF's original relationships and controls. */
-    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 22px;
-        align-items: start;
-    }
-    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > * {
-        grid-column: 1 / -1;
-        min-width: 0;
-    }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor) {
-        grid-column: auto;
+
+    /* Index: every category is a full-width section. Rows share the same
+       columns, so long categories no longer create three uneven towers. */
+    #mainbody > .tborder:has(> table.bordercolor a[name^="b"]) {
+        overflow: hidden;
         margin-top: 0 !important;
         background: var(--tig-paper);
-        overflow: hidden;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor {
+
+    #mainbody > .tborder:has(> table.bordercolor a[name^="b"]) > :is(.catbg, .catbg2) {
+        padding: 12px 20px !important;
+        border-radius: 9px 9px 0 0;
+        font-size: calc(16px * var(--tig-text-scale));
+        line-height: 1.4;
+    }
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]),
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody {
         display: block;
+        width: 100%;
         min-width: 0;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody {
-        display: block;
-    }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr {
         display: grid;
-        grid-template-columns: 48px minmax(0, 1fr) 100px;
-        padding: 16px;
-        gap: 8px 12px;
+        grid-template-columns: 36px minmax(0, 1fr) 110px minmax(230px, 0.6fr);
+        align-items: center;
+        gap: 10px 16px;
+        padding: 16px 20px;
         border-bottom: 1px solid var(--tig-line);
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td {
         display: block;
         width: auto !important;
+        min-width: 0;
         padding: 0;
         border: 0;
         background: transparent;
-        min-width: 0;
         overflow-wrap: anywhere;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(1) {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
         grid-column: 1;
-        grid-row: 1 / 3;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(2) {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) img {
+        width: 32px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(2) {
         grid-column: 2;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(3) {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(3) {
         grid-column: 3;
         text-align: right;
-        color: var(--tig-muted);
+        font-variant-numeric: tabular-nums;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(4) {
-        grid-column: 2 / -1;
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
+        grid-column: 4;
+        font-size: calc(12px * var(--tig-text-scale));
+        line-height: 1.65;
+    }
+
+    #mainbody > .tborder > .bordercolor a[name^="b"] {
+        font-size: calc(16px * var(--tig-text-scale));
+        font-weight: 650;
+        line-height: 1.4;
+    }
+
+    #mainbody > .tborder > .bordercolor > tbody > tr > td:has(a[name^="b"]) > span {
+        margin: 0 !important;
+        color: var(--tig-muted);
+        font-size: calc(13px * var(--tig-text-scale)) !important;
+        line-height: 1.6;
+    }
+
+    #mainbody > .tborder > .bordercolor > tbody > tr > td > span[style*="font-size: 12px"] {
+        font-size: calc(12px * var(--tig-text-scale)) !important;
+    }
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) {
+        display: block;
+        padding: 8px 20px 10px 72px;
+        background: #192636;
         font-size: calc(12px * var(--tig-text-scale));
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(4) br {
-        display: none;
-    }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(4) a {
-        margin-right: 4px;
-    }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:has(> td[colspan]) {
-        display: block;
-        padding: 8px 16px 10px 76px;
-        background: #19232f;
-    }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:has(> td[rowspan]) {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(+ tr > td[colspan]),
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:last-child {
         border-bottom: 0;
     }
-    #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:hover {
-        background: #1b2938;
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])):hover {
+        background: #1d2c3d;
     }
-    /* Topic list uses a real CSS grid, with space reserved for metadata. */
-    #quickModForm > .tborder2 > table {
+
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td.catbg[colspan]) {
+        display: block;
+        padding: 12px 20px;
+        background: var(--tig-header);
+    }
+    #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td.catbg[colspan] {
+        font-size: calc(16px * var(--tig-text-scale));
+        line-height: 1.4;
+    }
+
+    /* Board listing: consistent metadata columns; compact cards below 1150px. */
+    #quickModForm > .tborder2 {
+        overflow-x: auto;
+    }
+
+    #quickModForm > .tborder2 > table,
+    #quickModForm > .tborder2 > table > tbody {
         display: block;
         min-width: 0;
     }
-    #quickModForm > .tborder2 > table > tbody {
-        display: block;
-    }
+
     #quickModForm > .tborder2 > table > tbody > tr {
         display: grid;
-        grid-template-columns: 32px 66px minmax(220px, 1fr) 130px 70px 85px minmax(170px, 240px) 28px;
+        grid-template-columns: 24px 50px minmax(220px, 1fr) 120px 56px 64px minmax(170px, 220px) 24px;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         padding: 14px 16px;
-        background: var(--tig-paper);
         border-bottom: 1px solid var(--tig-line);
+        background: var(--tig-paper);
     }
+
     #quickModForm > .tborder2 > table > tbody > tr > td {
         display: block;
         width: auto !important;
@@ -721,161 +552,453 @@
         background: transparent;
         overflow-wrap: anywhere;
     }
-    #quickModForm > .tborder2 > table > tbody > tr:has(> .catbg3) {
-        background: #202d3c;
-    }
+
     #quickModForm > .tborder2 > table > tbody > tr > td[colspan="2"] {
         grid-column: span 2;
     }
+
     #quickModForm > .tborder2 > table > tbody > tr > td[colspan="7"] {
         grid-column: 1 / -1;
     }
-    #quickModForm > .tborder2 > table > tbody > tr:hover {
-        background: #1b2938;
+
+    #quickModForm > .tborder2 > table > tbody > tr:has(> .catbg3) {
+        background: var(--tig-header);
     }
-    #quickModForm > .tborder2 > table > tbody > tr:hover > td:not(.catbg3) {
+
+    #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)):hover {
+        background: #1d2c3d;
+    }
+
+    #quickModForm span[id^="msg_"] > a {
+        font-size: calc(15px * var(--tig-text-scale));
+        font-weight: 600;
+        line-height: 1.45;
+    }
+
+    #quickModForm small[id^="pages"] {
+        display: inline-block;
+        margin-top: 4px;
+    }
+
+    /* Thread cards keep author and content columns at a readable measure. */
+    #quickModForm > table.bordercolor {
         background: transparent;
     }
-    /* Widen the thread panel while keeping prose at a comfortable reading width. */
+
+    #quickModForm > table.bordercolor > tbody > tr > td {
+        padding: 0 0 18px !important;
+    }
+
+    #quickModForm > table.bordercolor > tbody > tr > td > table > tbody > tr > td {
+        padding: 20px;
+        border: 1px solid var(--tig-line);
+        border-radius: 10px;
+        background: var(--tig-paper);
+    }
+
     #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody {
         display: grid;
-        grid-template-columns: 190px minmax(0, 1fr);
+        grid-template-columns: 160px minmax(0, 1fr);
     }
+
     #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr {
         display: contents;
     }
+
     #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td {
         display: block;
         width: auto;
         min-width: 0;
     }
+
     #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td[rowspan] {
         grid-column: 1;
         grid-row: 1 / 3;
-        width: auto;
+        padding: 4px 18px 4px 0;
+        border-right: 1px solid var(--tig-line);
+        overflow-wrap: anywhere;
     }
+
     #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td:not([rowspan]) {
         grid-column: 2;
+        padding-left: 22px;
     }
-    .post {
-        max-width: 100ch;
+
+    td:has(> .post) > table > tbody > tr > td:first-child {
+        width: 24px;
     }
+
+    .post,
+    .personalmessage {
+        max-width: 80ch;
+        padding: 12px 0;
+        font-size: calc(16px * var(--tig-text-scale));
+        line-height: 1.75;
+        overflow-wrap: anywhere;
+    }
+
+    .post img,
+    .signature img,
+    .avatar {
+        max-width: 100%;
+        height: auto;
+    }
+
     .post img {
-        max-height: 85vh;
+        max-height: 80vh;
         object-fit: contain;
         object-position: left;
     }
-    #quickModForm > table.bordercolor > tbody > tr > td > table > tbody > tr > td {
-        background: var(--tig-paper);
+
+    .post iframe,
+    .post video {
+        width: min(100%, 720px);
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        border-radius: 6px;
     }
-    @media (min-width: 1850px) {
-        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
+
+    .avatar {
+        border-radius: 8px;
     }
+
+    .signature {
+        padding-top: 12px;
+        color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale));
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .quote {
+        margin: 10px 0;
+        padding: 12px 16px;
+        border: 0;
+        border-left: 3px solid #7fa5b5;
+        border-radius: 0 6px 6px 0;
+        background: var(--tig-soft);
+        color: var(--tig-ink);
+        font-size: calc(14px * var(--tig-text-scale));
+        line-height: 1.65;
+    }
+
+    .quoteheader,
+    .codeheader {
+        margin-top: 12px;
+        color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale));
+        line-height: 1.5;
+    }
+
+    .code,
+    pre {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px;
+        border: 1px solid var(--tig-line);
+        border-radius: 6px;
+        background: var(--tig-bg);
+        font: calc(13px * var(--tig-text-scale))/1.6 Consolas, monospace;
+        white-space: pre;
+        overflow: auto;
+        overflow-wrap: normal;
+    }
+
+    .hrcolor {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid var(--tig-line);
+    }
+
+    .postbuttons {
+        white-space: normal;
+    }
+
+    .postbuttons a {
+        display: inline-flex;
+        align-items: center;
+        min-height: var(--tig-control-height);
+        margin: 3px;
+        padding: 7px 10px;
+        border: 1px solid var(--tig-line);
+        border-radius: 6px;
+        background: var(--tig-soft);
+        vertical-align: middle;
+    }
+
+    .postbuttons img {
+        vertical-align: middle;
+    }
+
+    a.navPages {
+        display: inline-block;
+        min-width: 28px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+    }
+
+    a.navPages:hover {
+        background: var(--tig-soft);
+    }
+
+    #footer-l,
+    #footer-r,
+    #footer,
+    #footer2 {
+        height: auto;
+        padding: 12px;
+        background: none;
+        color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale));
+    }
+
+    #footer a {
+        color: var(--tig-link);
+    }
+
+    /* Keep intermediate widths intentional rather than squeezing fixed tracks. */
     @media (max-width: 1150px) {
-        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
-            grid-template-columns: minmax(0, 1fr);
-        }
         #quickModForm > .tborder2 > table > tbody > tr {
-            grid-template-columns: 28px 60px minmax(0, 1fr) 28px;
-            gap: 8px 12px;
+            grid-template-columns: 24px 50px minmax(0, 1fr) 24px;
+            gap: 8px 10px;
         }
-        #quickModForm > .tborder2 > table > tbody > tr > td:nth-child(3) {
+
+        #quickModForm > .tborder2 > table > tbody > tr:has(> .catbg3) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(2) {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(3) {
             grid-column: 3;
+            grid-row: 1;
         }
+
         #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(4) {
-            grid-column: 2 / 4;
+            grid-column: 2 / -1;
+            grid-row: 2;
         }
-        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(4)::before {
-            content: "Started by ";
-            color: var(--tig-muted);
-            font-size: calc(12px * var(--tig-text-scale));
-        }
+
         #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(5) {
-            grid-column: 2 / 4;
+            grid-column: 2 / -1;
+            grid-row: 3;
+            justify-self: start;
+            max-width: 50%;
             text-align: left;
-            font-size: calc(12px * var(--tig-text-scale));
         }
-        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(5)::after {
-            content: " replies";
-            color: var(--tig-muted);
-        }
+
         #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(6) {
-            grid-column: 2 / 4;
-            text-align: left;
-            font-size: calc(12px * var(--tig-text-scale));
+            grid-column: 2 / -1;
+            grid-row: 3;
+            justify-self: end;
+            max-width: 50%;
+            text-align: right;
         }
-        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(6)::after {
-            content: " views";
-            color: var(--tig-muted);
-        }
+
         #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(7) {
-            grid-column: 2 / 4;
+            grid-column: 2 / -1;
+            grid-row: 4;
         }
+
         #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(8) {
             grid-column: 4;
             grid-row: 1;
         }
-        #quickModForm > .tborder2 > table > tbody > tr:has(> .catbg3) {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(4)::before {
+            content: "Started by ";
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(5)::after {
+            content: " replies";
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr:not(:has(> .catbg3)) > td:nth-child(6)::after {
+            content: " views";
         }
     }
+
+    @media (max-width: 900px) {
+        body#page_bg {
+            padding: 12px !important;
+        }
+
+        #mainbody {
+            padding: 0 16px 20px;
+        }
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr {
+            grid-template-columns: 32px minmax(0, 1fr) 100px;
+        }
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
+            grid-row: 1 / 3;
+            align-self: start;
+        }
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
+            grid-column: 2 / -1;
+            grid-row: 2;
+        }
+    }
+
+    @media (max-width: 720px) {
+        #header { display: block; }
+        #logo-bg {
+            width: min(100%, 440px);
+            height: auto;
+            aspect-ratio: 440 / 111;
+        }
+        #news { padding: 12px 20px 18px; }
+        #showcase { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .searchfield {
+            padding-top: 16px;
+            border-top: 1px solid var(--tig-line);
+            text-align: left;
+        }
+        #showcase .searchfield form { max-width: none; margin-left: 0 !important; }
+        #showcase .searchfield form > a { justify-self: start; }
+    }
+
     @media (max-width: 640px) {
+        :root { --tig-control-height: 44px; }
+
+        #mainbody > table.tborder .postbuttons { text-align: left; }
+
         body#page_bg {
             padding: 0 !important;
         }
+
+        #header,
+        #header-l,
+        #header-r,
+        #mainbody {
+            border-radius: 0;
+        }
+
+        #mainbody {
+            padding: 0 12px 16px;
+        }
+
+        #nav li a {
+            padding: 9px 10px;
+        }
+
         #showcase {
-            grid-template-columns: minmax(0, 1fr);
+            margin-top: 16px;
+            padding: 16px;
+        }
+
+        #mainbody > .tborder:has(> table.bordercolor a[name^="b"]) > :is(.catbg, .catbg2) {
+            padding: 12px 14px !important;
+        }
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr {
+            grid-template-columns: 28px minmax(0, 1fr);
+            gap: 8px 12px;
             padding: 14px;
         }
-        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr {
-            grid-template-columns: 36px minmax(0, 1fr);
-            padding: 12px;
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
+            grid-row: 1 / 4;
         }
-        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(3) {
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) img {
+            width: 28px;
+            height: 34px;
+        }
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(3) {
             grid-column: 2;
+            grid-row: 2;
             text-align: left;
         }
-        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr > td:nth-child(3) br {
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(3) br {
             display: none;
         }
-        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:has(> td[colspan]) {
-            padding-left: 60px;
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
+            grid-column: 2;
+            grid-row: 3;
         }
-        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor img {
-            max-width: 100%;
+
+        #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) {
+            padding: 8px 14px 10px 54px;
         }
+
+        #mainbody > table.tborder:has(.postbuttons) > tbody > tr {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        #mainbody > table.tborder:has(.postbuttons) > tbody > tr > td {
+            display: block;
+            width: 100%;
+            padding: 10px !important;
+            text-align: left;
+        }
+
+        #quickModForm > .tborder2 > table > tbody > tr {
+            grid-template-columns: 20px 44px minmax(0, 1fr) 20px;
+            padding: 14px 12px;
+            gap: 8px;
+        }
+
+        #quickModForm > table.bordercolor > tbody > tr > td > table > tbody > tr > td {
+            padding: 14px;
+        }
+
         #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody {
             grid-template-columns: minmax(0, 1fr);
         }
-        #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td[rowspan],
+
+        #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td[rowspan] {
+            grid-row: auto;
+            padding: 0 0 12px;
+            border-right: 0;
+            border-bottom: 1px solid var(--tig-line);
+        }
+
         #quickModForm > table.bordercolor table:has(> tbody > tr > td > .post) > tbody > tr > td:not([rowspan]) {
             grid-column: 1;
-            grid-row: auto;
+            padding: 12px 0 0;
+        }
+
+        table.titlebg2:has(select) > tbody,
+        table.titlebg2:has(select) > tbody > tr,
+        table.titlebg2:has(select) > tbody > tr > td {
+            display: block;
+            width: 100%;
+        }
+
+        table.titlebg2:has(select) select {
+            width: 100%;
         }
     }
-    /* Override the legacy account-panel foreground and separate its metadata. */
-    #showcase {
-        color: var(--tig-ink);
-    }
-    #showcase .searchfield > br {
-        display: inline;
-    }
-    #showcase .searchfield > br + br {
-        display: none;
-    }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor) > .catbg {
-        padding: 13px 16px !important;
-        font-size: calc(17px * var(--tig-text-scale));
-        border-radius: 10px 10px 0 0;
+
+    table.tborder {
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
     }
 
-    /* MIDNIGHT ICONS v1.1 — local SVG replacements, no external requests.
-   Select exact SMF image paths; preserve avatars, post artwork and joysticks.
-   Original image alt text and links remain intact. */
+    /* Local SVG replacements. Preserve post artwork, avatars, and image alt text. */
     #mainbody img[src$="/arrow.png"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
         content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239bb8ce%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m9%206%206%206-6%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
         width: 18px !important;
@@ -1317,7 +1440,21 @@
         border: 0;
     }
 
-    #mainbody img[src$="/english/markread.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
+    /* Shared action-button geometry; each binding supplies only its icon and label. */
+    #mainbody img:is(
+        [src$="/english/markread.gif"],
+        [src$="/english/markunread.gif"],
+        [src$="/english/notify.gif"],
+        [src$="/english/unnotify.gif"],
+        [src$="/english/new_topic.gif"],
+        [src$="/english/new_poll.gif"],
+        [src$="/english/reply.gif"],
+        [src$="/english/sendtopic.gif"],
+        [src$="/english/print.gif"],
+        [src$="/english/quote.gif"],
+        [src$="/english/modify.gif"],
+        [src$="/english/remove.gif"]
+    ):not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
         position: absolute;
         width: 1px !important;
         height: 1px !important;
@@ -1326,487 +1463,151 @@
         overflow: hidden;
         clip-path: inset(50%);
     }
+    #mainbody a:not(.post a):not(.signature a):has(> img:is(
+        [src$="/english/markread.gif"],
+        [src$="/english/markunread.gif"],
+        [src$="/english/notify.gif"],
+        [src$="/english/unnotify.gif"],
+        [src$="/english/new_topic.gif"],
+        [src$="/english/new_poll.gif"],
+        [src$="/english/reply.gif"],
+        [src$="/english/sendtopic.gif"],
+        [src$="/english/print.gif"],
+        [src$="/english/quote.gif"],
+        [src$="/english/modify.gif"],
+        [src$="/english/remove.gif"]
+    )) {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        position: relative;
+        min-height: var(--tig-control-height);
+        padding: 7px 10px;
+        margin: 3px;
+        border: 1px solid #40556b;
+        border-radius: 6px;
+        background: var(--tig-soft);
+        color: var(--tig-ink);
+        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
+        text-decoration: none;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+    #mainbody a:not(.post a):not(.signature a):has(> img:is(
+        [src$="/english/markread.gif"],
+        [src$="/english/markunread.gif"],
+        [src$="/english/notify.gif"],
+        [src$="/english/unnotify.gif"],
+        [src$="/english/new_topic.gif"],
+        [src$="/english/new_poll.gif"],
+        [src$="/english/reply.gif"],
+        [src$="/english/sendtopic.gif"],
+        [src$="/english/print.gif"],
+        [src$="/english/quote.gif"],
+        [src$="/english/modify.gif"],
+        [src$="/english/remove.gif"]
+    ))::before {
+        content: "";
+        flex: none;
+        width: 16px;
+        height: 16px;
+        background: var(--tig-action-icon) center / contain no-repeat;
+    }
+    #mainbody a:not(.post a):not(.signature a):has(> img:is(
+        [src$="/english/markread.gif"],
+        [src$="/english/markunread.gif"],
+        [src$="/english/notify.gif"],
+        [src$="/english/unnotify.gif"],
+        [src$="/english/new_topic.gif"],
+        [src$="/english/new_poll.gif"],
+        [src$="/english/reply.gif"],
+        [src$="/english/sendtopic.gif"],
+        [src$="/english/print.gif"],
+        [src$="/english/quote.gif"],
+        [src$="/english/modify.gif"],
+        [src$="/english/remove.gif"]
+    ))::after {
+        content: var(--tig-action-label);
+    }
+    #mainbody a:not(.post a):not(.signature a):has(> img:is(
+        [src$="/english/markread.gif"],
+        [src$="/english/markunread.gif"],
+        [src$="/english/notify.gif"],
+        [src$="/english/unnotify.gif"],
+        [src$="/english/new_topic.gif"],
+        [src$="/english/new_poll.gif"],
+        [src$="/english/reply.gif"],
+        [src$="/english/sendtopic.gif"],
+        [src$="/english/print.gif"],
+        [src$="/english/quote.gif"],
+        [src$="/english/modify.gif"],
+        [src$="/english/remove.gif"]
+    )):hover {
+        border-color: #85bfd8;
+        background: #304a63;
+        color: #fff;
+        text-decoration: none;
+    }
+
     #mainbody a:has(> img[src$="/english/markread.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/markread.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m5%2012%204%204L19%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/markread.gif"])::after {
-        content: "Mark read";
-    }
-    #mainbody a:has(> img[src$="/english/markread.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m5%2012%204%204L19%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Mark read";
     }
 
-    #mainbody img[src$="/english/markunread.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/markunread.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/markunread.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%223%22%2F%3E%3Cpath%20d%3D%22m3%207%209%206%209-6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/markunread.gif"])::after {
-        content: "Mark unread";
-    }
-    #mainbody a:has(> img[src$="/english/markunread.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%223%22%2F%3E%3Cpath%20d%3D%22m3%207%209%206%209-6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Mark unread";
     }
 
-    #mainbody img[src$="/english/notify.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/notify.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/notify.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M18%208a6%206%200%200%200-12%200c0%207-3%207-3%209h18c0-2-3-2-3-9M10%2021h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/notify.gif"])::after {
-        content: "Notify";
-    }
-    #mainbody a:has(> img[src$="/english/notify.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M18%208a6%206%200%200%200-12%200c0%207-3%207-3%209h18c0-2-3-2-3-9M10%2021h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Notify";
     }
 
-    #mainbody img[src$="/english/unnotify.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/unnotify.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/unnotify.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M18%208a6%206%200%200%200-12%200c0%207-3%207-3%209h18c0-2-3-2-3-9M10%2021h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/unnotify.gif"])::after {
-        content: "Unnotify";
-    }
-    #mainbody a:has(> img[src$="/english/unnotify.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M18%208a6%206%200%200%200-12%200c0%207-3%207-3%209h18c0-2-3-2-3-9M10%2021h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Unnotify";
     }
 
-    #mainbody img[src$="/english/new_topic.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/new_topic.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/new_topic.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%205v14M5%2012h14%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/new_topic.gif"])::after {
-        content: "New topic";
-    }
-    #mainbody a:has(> img[src$="/english/new_topic.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%205v14M5%2012h14%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "New topic";
     }
 
-    #mainbody img[src$="/english/new_poll.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/new_poll.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/new_poll.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%2020V10M12%2020V4M19%2020v-7%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/new_poll.gif"])::after {
-        content: "New poll";
-    }
-    #mainbody a:has(> img[src$="/english/new_poll.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%2020V10M12%2020V4M19%2020v-7%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "New poll";
     }
 
-    #mainbody img[src$="/english/reply.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/reply.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/reply.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m9%205-6%206%206%206M3%2011h10a7%207%200%200%201%207%207%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/reply.gif"])::after {
-        content: "Reply";
-    }
-    #mainbody a:has(> img[src$="/english/reply.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m9%205-6%206%206%206M3%2011h10a7%207%200%200%201%207%207%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Reply";
     }
 
-    #mainbody img[src$="/english/sendtopic.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/sendtopic.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/sendtopic.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%223%22%2F%3E%3Cpath%20d%3D%22m3%207%209%206%209-6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/sendtopic.gif"])::after {
-        content: "Share topic";
-    }
-    #mainbody a:has(> img[src$="/english/sendtopic.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%225%22%20width%3D%2218%22%20height%3D%2214%22%20rx%3D%223%22%2F%3E%3Cpath%20d%3D%22m3%207%209%206%209-6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Share topic";
     }
 
-    #mainbody img[src$="/english/print.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/print.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/print.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%208V3h10v5M7%2017H3V8h18v9h-4M7%2014h10v7H7z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/print.gif"])::after {
-        content: "Print";
-    }
-    #mainbody a:has(> img[src$="/english/print.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M7%208V3h10v5M7%2017H3V8h18v9h-4M7%2014h10v7H7z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Print";
     }
 
-    #mainbody img[src$="/english/quote.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/quote.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/quote.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%207h5v7H5zM14%207h5v7h-5zM10%2014c0%203-2%204-4%204M19%2014c0%203-2%204-4%204%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/quote.gif"])::after {
-        content: "Quote";
-    }
-    #mainbody a:has(> img[src$="/english/quote.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%207h5v7H5zM14%207h5v7h-5zM10%2014c0%203-2%204-4%204M19%2014c0%203-2%204-4%204%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Quote";
     }
 
-    #mainbody img[src$="/english/modify.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/modify.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/modify.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%205v14M5%2012h14%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/modify.gif"])::after {
-        content: "Edit";
-    }
-    #mainbody a:has(> img[src$="/english/modify.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%205v14M5%2012h14%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Edit";
     }
 
-    #mainbody img[src$="/english/remove.gif"]:not(.post img):not(.signature img):not(.avatar):not(.avatar_t) {
-        position: absolute;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-    }
     #mainbody a:has(> img[src$="/english/remove.gif"]) {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        position: relative;
-        padding: 7px 10px;
-        margin: 3px;
-        border: 1px solid #40556b;
-        border-radius: 6px;
-        background: #223246;
-        color: #dfebf5;
-        font: 600 calc(12px * var(--tig-text-scale))/1.4 system-ui, sans-serif;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-    #mainbody a:has(> img[src$="/english/remove.gif"])::before {
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m9%206%206%206-6%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") center / contain no-repeat;
-        flex: none;
-    }
-    #mainbody a:has(> img[src$="/english/remove.gif"])::after {
-        content: "Remove";
-    }
-    #mainbody a:has(> img[src$="/english/remove.gif"]):hover {
-        background: #304a63;
-        border-color: #85bfd8;
-        color: white;
+        --tig-action-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23b6deee%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m9%206%206%206-6%206%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+        --tig-action-label: "Remove";
     }
 
     #mainbody a:has(> img[src$="/english/new.gif"]) {
@@ -1820,33 +1621,6 @@
         border-radius: 5px;
     }
     #mainbody a:has(> img[src$="/icons/last_post.gif"]):hover {
-        background: #304a63;
-    }
-    #mainbody .pathway img {
-        opacity: 1;
-    }
-
-
-    /* Scale the original inline UI captions, too. User-written post formatting
-   and artwork retain their own sizing. */
-    #mainbody > .tborder > .bordercolor > tbody > tr > td > span[style*="font-size: 12px"] {
-        font-size: calc(12px * var(--tig-text-scale)) !important;
-    }
-    .searchfield > span[style*="font-size: 10px"] {
-        font-size: calc(10px * var(--tig-text-scale)) !important;
-    }
-    @media (max-width: 640px) {
-        /* Let pagination and action buttons occupy separate lines. */
-        #mainbody > table.tborder:has(.postbuttons) > tbody > tr {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        #mainbody > table.tborder:has(.postbuttons) > tbody > tr > td {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            text-align: left;
-        }
+        background: var(--tig-soft);
     }
 }
