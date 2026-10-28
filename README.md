@@ -4,7 +4,7 @@ A dark, responsive theme for the [TIGSource forums](https://forums.tigsource.com
 
 **[Install Midnight Grid](https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css)** · [Report a bug](https://github.com/michaelplzno/tigsource-midnight-grid/issues)
 
-Midnight Grid gives the forum aligned category sections, responsive board rows, readable posts, and embedded SVG interface icons. It uses system fonts and adds no remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
+Midnight Grid gives the forum a responsive category-card grid, readable posts, and embedded SVG interface icons. Cards line up in rows with matching heights and consistent spacing: three columns on wide screens, two on medium screens, and one on smaller screens. It uses system fonts and adds no remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
 
 ## Install
 

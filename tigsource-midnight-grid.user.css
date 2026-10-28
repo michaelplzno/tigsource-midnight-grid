@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           TIGSource — Midnight Grid
 @namespace      https://github.com/michaelplzno/tigsource-midnight-grid
-@version        1.1.0
+@version        1.2.0
 @description    A dark, responsive grid theme for the TIGSource forums.
 @author         michaelplzno
 @license        MIT
@@ -412,8 +412,7 @@
         background: var(--tig-paper);
     }
 
-    /* Index: every category is a full-width section. Rows share the same
-       columns, so long categories no longer create three uneven towers. */
+    /* Shared board rows, also used by the child-board table on board pages. */
     #mainbody > .tborder:has(> table.bordercolor a[name^="b"]) {
         overflow: hidden;
         margin-top: 0 !important;
@@ -520,6 +519,73 @@
     #mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr > td.catbg[colspan] {
         font-size: calc(16px * var(--tig-text-scale));
         line-height: 1.4;
+    }
+
+    /* Index cards share grid tracks and stretch to the tallest card in each
+       row. Board entries retain their natural height and uniform padding. */
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > * {
+        grid-column: 1 / -1;
+        min-width: 0;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor) {
+        grid-column: auto;
+        align-self: stretch;
+    }
+
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > br {
+        display: none;
+    }
+
+    @media (min-width: 1000px) {
+        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) {
+            grid-template-columns: 32px minmax(0, 1fr) 84px;
+            align-items: start;
+            align-content: start;
+            min-height: 148px;
+            gap: 8px 12px;
+            padding: 16px;
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
+            grid-row: 1 / 3;
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
+            grid-column: 2 / -1;
+            grid-row: 2;
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) br {
+            display: none;
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) a {
+            margin-right: 4px;
+        }
+
+        #mainbody > .tborder > :is(.catbg, .catbg2) + table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) {
+            padding: 8px 16px 10px 60px;
+        }
+    }
+
+    @media (min-width: 1440px) {
+        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
 
     /* Board listing: consistent metadata columns; compact cards below 1150px. */

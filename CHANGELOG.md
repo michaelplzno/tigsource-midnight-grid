@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-10-28
+
+- Restore the category-card grid: three columns from 1440px, two from 1000px, and one below 1000px.
+- Align card tops and bottoms within each row and use consistent 20px gutters.
+- Keep uniform board-entry padding and the typography, controls, and mobile fixes from 1.1.0.
+- Check card widths, matching row heights, gutters, and readable board-title widths in the layout probe.
+
 ## 1.1.0 — 2026-10-28
 
 - Replace uneven category columns with full-width sections and aligned board rows.
