@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           TIGSource — Midnight Grid
 @namespace      https://github.com/michaelplzno/tigsource-midnight-grid
-@version        1.5.0
+@version        1.6.0
 @description    A dark, responsive grid theme for the TIGSource forums.
 @author         michaelplzno
 @license        MIT
@@ -527,6 +527,8 @@
         --tig-board-columns: 1;
         --tig-board-rows: round(up, calc(var(--tig-board-count) / var(--tig-board-columns)), 1);
         --tig-section-label: "Forum";
+        --tig-section-accent: #a5b7ca;
+        --tig-section-tint: #1c2a3a;
         --tig-child-space: 44px;
         display: grid;
         grid-template-columns: repeat(var(--tig-board-columns), minmax(0, 1fr));
@@ -569,16 +571,17 @@
         position: relative;
         display: grid;
         grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: auto auto auto;
+        grid-template-rows: auto auto auto auto auto;
         align-content: start;
         align-items: start;
-        gap: 4px;
+        gap: 2px;
         height: var(--tig-tile-height);
         min-height: 0;
         padding: 12px;
         border: 1px solid var(--tig-line);
         border-radius: 9px;
-        background: var(--tig-paper);
+        background: linear-gradient(110deg, var(--tig-section-tint), var(--tig-paper) 75%);
+        box-shadow: inset 3px 0 var(--tig-section-accent);
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(+ tr > td[colspan]) {
@@ -602,15 +605,17 @@
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) {
-        grid-column: 1;
-        grid-row: 1;
+        /* Let the title, counts, and description share the tile's grid. */
+        display: contents;
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2)::before {
         content: var(--tig-section-label);
         display: block;
-        margin-bottom: 3px;
-        color: var(--tig-muted);
+        grid-column: 1;
+        grid-row: 1;
+        padding-right: 47px;
+        color: var(--tig-section-accent);
         font-size: calc(10px * var(--tig-text-scale));
         font-weight: 600;
         line-height: 1.2;
@@ -620,7 +625,8 @@
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > :is(span, b):has(a[name^="b"]) {
         display: block;
-        min-height: 42px;
+        grid-column: 1;
+        grid-row: 2;
         padding-right: 47px;
         font-size: inherit !important;
         line-height: 1.35;
@@ -635,6 +641,8 @@
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > span:not(:has(a[name^="b"])) {
         display: block;
+        grid-column: 1;
+        grid-row: 4;
         margin: 4px 0 0 !important;
         color: var(--tig-muted);
         font-size: calc(12px * var(--tig-text-scale)) !important;
@@ -642,13 +650,16 @@
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) .smalltext {
+        grid-column: 1;
+        grid-row: 5;
         font-size: calc(10px * var(--tig-text-scale));
         line-height: 1.35;
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(3) {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 3;
+        padding-right: 47px;
         text-align: left;
         font-size: calc(10px * var(--tig-text-scale));
         line-height: 1.35;
@@ -663,9 +674,13 @@
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(3) br { display: none; }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) {
-        grid-column: 1;
-        grid-row: 3;
-        align-self: start;
+        /* A shared offset keeps the first line aligned, including footer tiles. */
+        position: absolute;
+        grid-column: auto;
+        grid-row: auto;
+        top: calc(var(--tig-tile-height) - 91px);
+        left: 12px;
+        right: 12px;
         font-size: calc(11px * var(--tig-text-scale));
         line-height: 1.4;
     }
@@ -687,6 +702,7 @@
         border-top: 1px solid var(--tig-line);
         border-radius: 0 0 8px 8px;
         background: var(--tig-soft);
+        box-shadow: inset 3px 0 var(--tig-section-accent);
         font-size: calc(10px * var(--tig-text-scale));
         line-height: 1.35;
     }
@@ -1023,10 +1039,10 @@
     #mainbody > .tborder:nth-child(6 of .tborder) { --tig-slot-offset: var(--tig-offset-6); }
     #mainbody > .tborder:nth-child(7 of .tborder) { --tig-slot-offset: var(--tig-offset-7); }
     #mainbody > .tborder:nth-child(8 of .tborder) { --tig-slot-offset: var(--tig-offset-8); }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="4"]) { --tig-section-label: "Community"; }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="2"]) { --tig-section-label: "Developer"; }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="8"]) { --tig-section-label: "Jobs"; }
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="1"]) { --tig-section-label: "Player"; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="4"]) { --tig-section-label: "Community"; --tig-section-accent: #8eb8dd; --tig-section-tint: #192737; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="2"]) { --tig-section-label: "Developer"; --tig-section-accent: #a0c8b4; --tig-section-tint: #192b2c; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="8"]) { --tig-section-label: "Jobs"; --tig-section-accent: #d1b58c; --tig-section-tint: #2b2928; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="1"]) { --tig-section-label: "Player"; --tig-section-accent: #b5a5d4; --tig-section-tint: #252335; }
 
     /* Board listing: consistent metadata columns; compact cards below 1150px. */
     #quickModForm > .tborder2 {

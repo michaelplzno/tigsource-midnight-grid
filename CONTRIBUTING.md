@@ -35,6 +35,7 @@ also check the live forum before releasing a layout change.
 - Navigate with the keyboard and confirm focus indicators remain visible.
 - Keep styles scoped to `https://forums.tigsource.com/` and preserve the original links, forms, post content, and image alt text.
 - Keep replacement icons embedded and avoid introducing remote asset requests.
+- Keep section names visible alongside their color accents so grouping does not depend on color alone.
 
 ## Report a problem
 

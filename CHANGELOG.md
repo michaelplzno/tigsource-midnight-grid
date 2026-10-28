@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 — 2026-10-28
+
+- Put post and topic counts directly beneath each board title, above the description.
+- Align the first latest-post line at the same height in every tile, including tiles with child-board links.
+- Add muted section colors through labels, a thin left accent, and a faint background tint.
+- Preserve four-column layouts, fixed 240px tiles, column-major order, and full-size joysticks.
+- Check title/count order, latest-post alignment, description clearance, and distinct section colors across responsive widths.
+
 ## 1.5.0 — 2026-10-28
 
 - Use four columns from 1800px while preserving global column-major order and fixed 240px tiles.

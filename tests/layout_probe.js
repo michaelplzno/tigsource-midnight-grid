@@ -45,8 +45,13 @@
             if (tile.scrollHeight > tile.clientHeight + 2) tileProblems.push('Tile content exceeds its height');
             const stats = tile.children[2].getBoundingClientRect();
             const latest = tile.children[3].getBoundingClientRect();
-            if (latest.top < stats.bottom || latest.top - stats.bottom > 8)
-                tileProblems.push('Unnecessary gap before latest post');
+            const title = tile.querySelector('a[name^="b"]').parentElement.getBoundingClientRect();
+            if (stats.top < title.bottom || stats.top - title.bottom > 6)
+                tileProblems.push('Counts are not directly beneath the board title');
+            const firstTile = members[0].getBoundingClientRect();
+            const firstLatest = members[0].children[3].getBoundingClientRect();
+            if (Math.abs((latest.top - rect.top) - (firstLatest.top - firstTile.top)) > 1)
+                tileProblems.push('Latest-post first lines do not align');
             const joystick = tile.children[0].querySelector('img');
             if (joystick) {
                 const bounds = joystick.getBoundingClientRect();
@@ -58,10 +63,16 @@
             }
             const label = getComputedStyle(tile.children[1], '::before').content;
             if (!label || label === 'none' || label === '""') tileProblems.push('Tile is missing its section label');
-            for (const cell of tile.children) {
+            for (const cell of [...tile.children, ...tile.children[1].children]) {
                 const bounds = cell.getBoundingClientRect();
+                if (!bounds.width || !bounds.height) continue;
                 if (bounds.top < rect.top || bounds.bottom > rect.bottom || bounds.left < rect.left || bounds.right > rect.right)
                     tileProblems.push('Cell extends outside its tile');
+            }
+            for (const part of tile.children[1].children) {
+                const bounds = part.getBoundingClientRect();
+                if (bounds.width && bounds.height && bounds.bottom > latest.top - 2)
+                    tileProblems.push('Description or moderator overlaps latest post');
             }
             const footer = tile.nextElementSibling;
             if (footer?.querySelector(':scope > td[colspan]')) {
@@ -85,7 +96,13 @@
             Math.min(replies.bottom, views.bottom) > Math.max(replies.top, views.top) + 1;
     }).length;
     const heights = searchControls.map(element => element.getBoundingClientRect().height);
-    const infoWidths = boardRows.map(row => row.children[1]?.getBoundingClientRect().width).filter(width => width > 0);
+    const infoWidths = boardRows.map(row => {
+        const info = row.children[1];
+        return (getComputedStyle(info).display === 'contents' ? info.querySelector('a[name^="b"]').parentElement : info).getBoundingClientRect().width;
+    }).filter(width => width > 0);
+    const sectionColors = categories.map(category => getComputedStyle(category).getPropertyValue('--tig-section-accent').trim());
+    if (sectionColors.some(color => !color) || new Set(sectionColors).size !== categories.length)
+        tileProblems.push('Sections do not have distinct accent colors');
     const outside = elements => elements.filter(element => {
         const rect = element.getBoundingClientRect();
         return rect.width > 0 && (rect.left < -1 || rect.right > innerWidth + 1);
@@ -102,6 +119,7 @@
         boardTileCount: tiles.length,
         continuousGrid: tileGrids.length === 1,
         sectionLabels: [...new Set(tiles.map(tile => getComputedStyle(tile.children[1], '::before').content))],
+        sectionColors,
         tileHeights: [...new Set(tileHeights.map(height => Math.round(height)))],
         tileProblems,
         alignedSections,
@@ -117,7 +135,7 @@
         brokenImages: [...document.images].filter(image => !image.complete || image.naturalWidth === 0).length,
         embeddedVideos: document.querySelectorAll('iframe').length,
     };
-    report.pass = report.themeActive && report.documentOverflow <= 1 && report.panelsOutsideViewport.length === 0 &&
+    report.pass = report.themeActive && tileProblems.length === 0 && report.documentOverflow <= 1 && report.panelsOutsideViewport.length === 0 &&
         report.brokenImages === 0 && alignedSections && overlappingCounts === 0 &&
         (!categories.length || report.actualCategoryColumns === expectedColumns) &&
         (!infoWidths.length || Math.min(...infoWidths) >= 160) &&
