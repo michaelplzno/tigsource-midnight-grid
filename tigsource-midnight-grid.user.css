@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           TIGSource — Midnight Grid
 @namespace      https://github.com/michaelplzno/tigsource-midnight-grid
-@version        1.4.0
+@version        1.5.0
 @description    A dark, responsive grid theme for the TIGSource forums.
 @author         michaelplzno
 @license        MIT
@@ -569,7 +569,8 @@
         position: relative;
         display: grid;
         grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: auto auto minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+        align-content: start;
         align-items: start;
         gap: 4px;
         height: var(--tig-tile-height);
@@ -588,15 +589,15 @@
         position: absolute;
         top: 12px;
         right: 12px;
-        width: 20px !important;
-        height: 26px;
+        width: 39px !important;
+        height: 58px;
         grid-column: auto;
         grid-row: auto;
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(1) img {
-        width: 20px;
-        height: 26px;
+        width: auto;
+        height: auto;
         object-fit: contain;
     }
 
@@ -619,7 +620,8 @@
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > :is(span, b):has(a[name^="b"]) {
         display: block;
-        padding-right: 28px;
+        min-height: 42px;
+        padding-right: 47px;
         font-size: inherit !important;
         line-height: 1.35;
     }
@@ -663,7 +665,7 @@
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) {
         grid-column: 1;
         grid-row: 3;
-        align-self: end;
+        align-self: start;
         font-size: calc(11px * var(--tig-text-scale));
         line-height: 1.4;
     }
@@ -696,6 +698,7 @@
 
     @media (min-width: 1000px) { #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) { --tig-board-columns: 2; } }
     @media (min-width: 1440px) { #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) { --tig-board-columns: 3; } }
+    @media (min-width: 1800px) { #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) { --tig-board-columns: 4; } }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) > td,
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) > td * {

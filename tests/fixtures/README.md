@@ -42,7 +42,8 @@ Check 1920px, 1280px, 900px, and 390px viewports, plus widths around the theme's
 breakpoints. Refresh after a CSS edit. For a quick layout report, paste the
 expression from `../layout_probe.js` into the preview tab's developer console.
 It checks column counts, fixed tile heights and gutters, global column-major order,
-visible tile content, child-board footer placement, readable board-title widths,
+visible tile content, full-size joysticks, compact latest-post spacing,
+child-board footer placement, readable board-title widths,
 search-control heights, overlapping reply/view counts, page overflow, panel
 bounds, and image loading.
 Check screenshots too; the probe cannot verify every visual detail or real

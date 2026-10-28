@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0 — 2026-10-28
+
+- Use four columns from 1800px while preserving global column-major order and fixed 240px tiles.
+- Place latest-post details directly beneath the statistics, removing the empty middle gap.
+- Restore the original 39 × 58px joystick icons and reserve space beside board titles.
+- Check the four-column breakpoint, compact metadata spacing, and full-size icons alongside the existing layout checks.
+
 ## 1.4.0 — 2026-10-28
 
 - Combine every board into one continuous grid, preserving global column-major order.

@@ -13,7 +13,7 @@
     const boardRows = [...document.querySelectorAll('#mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan]))')];
     const searchControls = [...document.querySelectorAll('#showcase form input[type="text"], #showcase form input[type="submit"]')];
     const sectionBoxes = sections.map(element => element.getBoundingClientRect());
-    const expectedColumns = innerWidth >= 1440 ? 3 : innerWidth >= 1000 ? 2 : 1;
+    const expectedColumns = innerWidth >= 1800 ? 4 : innerWidth >= 1440 ? 3 : innerWidth >= 1000 ? 2 : 1;
     const tileGrids = categories.length ? [document.querySelector('#mainbody')] : [];
     const tiles = categories.flatMap(category => [...category.querySelector(':scope > table.bordercolor > tbody').children]
         .filter(row => !row.querySelector(':scope > td[colspan]')));
@@ -43,6 +43,19 @@
                 if (Math.abs(rect.left - left.right - 16) > 1) tileProblems.push('Incorrect horizontal gutter');
             }
             if (tile.scrollHeight > tile.clientHeight + 2) tileProblems.push('Tile content exceeds its height');
+            const stats = tile.children[2].getBoundingClientRect();
+            const latest = tile.children[3].getBoundingClientRect();
+            if (latest.top < stats.bottom || latest.top - stats.bottom > 8)
+                tileProblems.push('Unnecessary gap before latest post');
+            const joystick = tile.children[0].querySelector('img');
+            if (joystick) {
+                const bounds = joystick.getBoundingClientRect();
+                if (Math.abs(bounds.width - joystick.naturalWidth) > 1 || Math.abs(bounds.height - joystick.naturalHeight) > 1)
+                    tileProblems.push('Joystick is not its original size');
+                const description = tile.children[1].querySelector(':scope > span:not(:has(a[name^="b"]))');
+                if (description && description.getBoundingClientRect().top < bounds.bottom)
+                    tileProblems.push('Joystick overlaps the description');
+            }
             const label = getComputedStyle(tile.children[1], '::before').content;
             if (!label || label === 'none' || label === '""') tileProblems.push('Tile is missing its section label');
             for (const cell of tile.children) {
