@@ -10,10 +10,12 @@ Midnight Grid turns the forum index into a responsive grid, gives topics and pos
 
 ## Install
 
-1. Install **Stylus** using the browser-store links in its [official project README](https://github.com/openstyles/stylus#releases).
-2. Open **[Install Midnight Grid](https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css)**. Stylus should open its installation screen.
-3. Click **Install style**. Leave **Check for updates** enabled if you want updates.
+1. Install the **Stylus** extension for your browser: [Chrome / Edge / Brave and other Chromium browsers](https://chromewebstore.google.com/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne) or [Firefox](https://addons.mozilla.org/firefox/addon/styl-us/). These are the store listings linked by the [official Stylus project](https://github.com/openstyles/stylus#releases).
+2. In the same browser, open **[Install Midnight Grid](https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css)**. Stylus should open its installation screen.
+3. Click **Install style**. Leave **Check for updates** enabled to receive future theme releases through Stylus.
 4. Visit or refresh [forums.tigsource.com](https://forums.tigsource.com/).
+
+You do not need a GitHub account, a downloaded ZIP, or any manual CSS copying for this method. It changes how the forum looks in your own browser.
 
 If the link shows plain CSS, confirm Stylus is enabled and its option to open the installer for `.user.css` URLs is enabled. The install link must open the **raw** file rather than GitHub's file viewer.
 
@@ -23,9 +25,15 @@ You can also install without a hosted repository: open the Stylus manager, enabl
 
 ## Updates and removal
 
-Stylus checks the `@updateURL` in the style metadata. Maintainers increment `@version` when publishing a change. You can also check for updates from the Stylus manager.
+Users who install from the link above and leave style updates enabled receive future releases through Stylus's update checks. Updates are periodic, rather than immediate. You can also check for updates from the Stylus manager. If you installed an earlier copy by pasting CSS, install from the hosted link once to subscribe to updates.
+
+Stylus checks the `@updateURL` in the style metadata. Maintainers increment `@version` when publishing a change.
 
 To restore the original forum appearance, disable or remove Midnight Grid in Stylus. The theme applies only to `https://forums.tigsource.com/` and does not change forum posts or account settings.
+
+## Share on TIGSource
+
+[Copy the ready-to-post announcement](docs/tigsource-post.txt) into a reply in the [original theme thread](https://forums.tigsource.com/index.php?topic=77372.0). The announcement uses the forum's BBCode link format.
 
 ## Customize
 
