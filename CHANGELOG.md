@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 — 2026-10-28
+
+- Combine every board into one continuous grid, preserving global column-major order.
+- Put the section name on each tile instead of separate category headings.
+- Pack full-width descriptions, compact statistics, and latest-post details into fixed 240px tiles, down from 400px.
+- Use 16px gutters and keep child-board links within their parent tile.
+- Check ordering across section boundaries, section labels, fixed heights, and fully visible tile content.
+
 ## 1.3.0 — 2026-10-28
 
 - Make each board an independent tile; categories are lightweight section headings.

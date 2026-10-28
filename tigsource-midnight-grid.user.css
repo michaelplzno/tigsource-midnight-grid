@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           TIGSource — Midnight Grid
 @namespace      https://github.com/michaelplzno/tigsource-midnight-grid
-@version        1.3.0
+@version        1.4.0
 @description    A dark, responsive grid theme for the TIGSource forums.
 @author         michaelplzno
 @license        MIT
@@ -22,7 +22,7 @@
         --tig-soft: #1c2a3a;
         --tig-header: #223247;
         --tig-width: 1600px;
-        --tig-tile-height: 400px;
+        --tig-tile-height: 240px;
         --tig-text-scale: 1.1;
         --tig-control-height: 40px;
     }
@@ -522,13 +522,17 @@
         line-height: 1.4;
     }
 
-    /* Boards are the tiles. Category wrappers supply only a section label. */
+    /* One grid for all boards. The original section DOM only supplies labels. */
     #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
         --tig-board-columns: 1;
-        --tig-child-space: 96px;
+        --tig-board-rows: round(up, calc(var(--tig-board-count) / var(--tig-board-columns)), 1);
+        --tig-section-label: "Forum";
+        --tig-child-space: 44px;
         display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 24px;
+        grid-template-columns: repeat(var(--tig-board-columns), minmax(0, 1fr));
+        grid-template-rows: auto auto auto repeat(var(--tig-board-rows), var(--tig-tile-height)) auto auto;
+        gap: 16px;
+        align-items: stretch;
     }
 
     #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > * {
@@ -538,102 +542,151 @@
         margin-bottom: 0 !important;
     }
 
-    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > br {
-        display: none;
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > #toolbar { grid-row: 1; }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > #showcase { grid-row: 2; }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > table:first-of-type { grid-row: 3; }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > table:not(:first-of-type) { grid-row: calc(var(--tig-board-rows) + 4); }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > .tborder:not(:has(> :is(.catbg, .catbg2) + table.bordercolor)) {
+        grid-row: calc(var(--tig-board-rows) + 5);
     }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) > br { display: none; }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) {
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background: none;
-        overflow: visible;
-    }
-
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > :is(.catbg, .catbg2) {
-        margin-bottom: 16px;
-        padding: 0 0 12px !important;
-        border-bottom: 1px solid var(--tig-line);
-        border-radius: 0;
-        background: none;
-        color: var(--tig-muted);
-        font-size: calc(14px * var(--tig-text-scale));
-        letter-spacing: 0.04em;
-    }
-
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) {
-        margin: 0 !important;
-    }
-
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]),
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]),
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody {
-        --tig-board-rows: round(up, calc(var(--tig-board-count) / var(--tig-board-columns)), 1);
-        display: grid;
-        grid-template-columns: repeat(var(--tig-board-columns), minmax(0, 1fr));
-        grid-template-rows: repeat(var(--tig-board-rows), var(--tig-tile-height));
-        grid-auto-flow: column;
-        gap: 20px;
-        align-items: stretch;
+        display: contents;
     }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > :is(.catbg, .catbg2) { display: none; }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr {
-        grid-column: calc(round(down, calc(var(--tig-board-slot) / var(--tig-board-rows)), 1) + 1);
-        grid-row: calc(mod(var(--tig-board-slot), var(--tig-board-rows)) + 1);
+        --tig-global-slot: calc(var(--tig-slot-offset) + var(--tig-board-slot));
+        grid-column: calc(round(down, calc(var(--tig-global-slot) / var(--tig-board-rows)), 1) + 1);
+        grid-row: calc(mod(var(--tig-global-slot), var(--tig-board-rows)) + 4);
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) {
+        position: relative;
         display: grid;
-        grid-template-columns: 32px minmax(0, 1fr) 84px;
-        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr);
         align-items: start;
-        gap: 12px;
+        gap: 4px;
         height: var(--tig-tile-height);
         min-height: 0;
-        padding: 18px 18px calc(18px + var(--tig-child-space));
+        padding: 12px;
         border: 1px solid var(--tig-line);
-        border-radius: 10px;
+        border-radius: 9px;
         background: var(--tig-paper);
     }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(+ tr > td[colspan]) {
+        padding-bottom: calc(12px + var(--tig-child-space));
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(1) {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 20px !important;
+        height: 26px;
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(1) img {
+        width: 20px;
+        height: 26px;
+        object-fit: contain;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) {
         grid-column: 1;
-        grid-row: 1 / 3;
-        align-self: start;
-    }
-
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(2) {
-        grid-column: 2;
         grid-row: 1;
     }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(3) {
-        grid-column: 3;
-        grid-row: 1;
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2)::before {
+        content: var(--tig-section-label);
+        display: block;
+        margin-bottom: 3px;
+        color: var(--tig-muted);
+        font-size: calc(10px * var(--tig-text-scale));
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
     }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
-        grid-column: 2 / -1;
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > :is(span, b):has(a[name^="b"]) {
+        display: block;
+        padding-right: 28px;
+        font-size: inherit !important;
+        line-height: 1.35;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) a[name^="b"] {
+        font-size: calc(15px * var(--tig-text-scale));
+        line-height: 1.35;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > br { display: none; }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) > span:not(:has(a[name^="b"])) {
+        display: block;
+        margin: 4px 0 0 !important;
+        color: var(--tig-muted);
+        font-size: calc(12px * var(--tig-text-scale)) !important;
+        line-height: 1.4;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(2) .smalltext {
+        font-size: calc(10px * var(--tig-text-scale));
+        line-height: 1.35;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(3) {
+        grid-column: 1;
         grid-row: 2;
+        text-align: left;
+        font-size: calc(10px * var(--tig-text-scale));
+        line-height: 1.35;
+        color: var(--tig-muted);
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(3) :is(span, small) {
+        font-size: inherit !important;
+        line-height: inherit;
+    }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(3) br { display: none; }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) {
+        grid-column: 1;
+        grid-row: 3;
         align-self: end;
+        font-size: calc(11px * var(--tig-text-scale));
+        line-height: 1.4;
     }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) br {
-        display: none;
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) > .smalltext {
+        font-size: inherit;
+        line-height: inherit;
     }
 
-    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) a {
-        margin-right: 4px;
-    }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) br { display: none; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) > td:nth-child(4) a { margin-right: 3px; }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) {
         align-self: end;
         z-index: 1;
         margin: 1px;
-        padding: 12px 16px;
+        padding: 7px 12px;
         border: 0;
         border-top: 1px solid var(--tig-line);
-        border-radius: 0 0 9px 9px;
+        border-radius: 0 0 8px 8px;
         background: var(--tig-soft);
-        font-size: calc(12px * var(--tig-text-scale));
+        font-size: calc(10px * var(--tig-text-scale));
+        line-height: 1.35;
     }
 
     #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])):hover {
@@ -641,44 +694,17 @@
         background: #1d2c3d;
     }
 
-    @media (min-width: 1000px) {
-        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
-            --tig-board-columns: 2;
-        }
+    @media (min-width: 1000px) { #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) { --tig-board-columns: 2; } }
+    @media (min-width: 1440px) { #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) { --tig-board-columns: 3; } }
+
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) > td,
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:has(> td[colspan]) > td * {
+        font-size: inherit !important;
+        line-height: inherit;
     }
 
-    @media (min-width: 1440px) {
-        #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
-            --tig-board-columns: 3;
-        }
-    }
-
-    @media (max-width: 640px) {
-        #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan])) {
-            grid-template-columns: 28px minmax(0, 1fr);
-            grid-template-rows: auto auto minmax(0, 1fr);
-        }
-
-        #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(1) {
-            grid-row: 1 / 4;
-        }
-
-        #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(3) {
-            grid-column: 2;
-            grid-row: 2;
-            text-align: left;
-        }
-
-        #mainbody > .tborder:has(> :is(.catbg, .catbg2) + table.bordercolor):has(a[name^="b"]) > table.bordercolor:has(a[name^="b"]) > tbody > tr > td:nth-child(4) {
-            grid-column: 2;
-            grid-row: 3;
-        }
-    }
-
-    /* SMF inserts child-board rows between board rows. Slot bindings keep
-       those footers in their parent tile. Count raw and child rows separately
-       because CSS forbids nesting :has() inside another :has(). Bindings cover
-       up to 32 boards and 64 original SMF rows per section. */
+    /* Preserve child-board pairing and derive global, column-major slots.
+       Counters support eight sections with up to sixteen raw SMF rows each. */
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(1 of :not(:has(> td[colspan]))), tr:nth-child(1 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 0; }
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(2 of :not(:has(> td[colspan]))), tr:nth-child(2 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 1; }
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(3 of :not(:has(> td[colspan]))), tr:nth-child(3 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 2; }
@@ -711,201 +737,293 @@
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(30 of :not(:has(> td[colspan]))), tr:nth-child(30 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 29; }
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(31 of :not(:has(> td[colspan]))), tr:nth-child(31 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 30; }
     #mainbody > .tborder > table.bordercolor > tbody > :is(tr:nth-child(32 of :not(:has(> td[colspan]))), tr:nth-child(32 of :not(:has(> td[colspan]))) + tr:has(> td[colspan])) { --tig-board-slot: 31; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(1)) { --tig-raw-row-count: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(1) > td[colspan]) { --tig-child-1: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(2)) { --tig-raw-row-count: 2; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(2) > td[colspan]) { --tig-child-2: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(3)) { --tig-raw-row-count: 3; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(3) > td[colspan]) { --tig-child-3: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(4)) { --tig-raw-row-count: 4; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(4) > td[colspan]) { --tig-child-4: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(5)) { --tig-raw-row-count: 5; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(5) > td[colspan]) { --tig-child-5: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(6)) { --tig-raw-row-count: 6; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(6) > td[colspan]) { --tig-child-6: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(7)) { --tig-raw-row-count: 7; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(7) > td[colspan]) { --tig-child-7: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(8)) { --tig-raw-row-count: 8; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(8) > td[colspan]) { --tig-child-8: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(9)) { --tig-raw-row-count: 9; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(9) > td[colspan]) { --tig-child-9: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(10)) { --tig-raw-row-count: 10; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(10) > td[colspan]) { --tig-child-10: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(11)) { --tig-raw-row-count: 11; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(11) > td[colspan]) { --tig-child-11: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(12)) { --tig-raw-row-count: 12; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(12) > td[colspan]) { --tig-child-12: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(13)) { --tig-raw-row-count: 13; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(13) > td[colspan]) { --tig-child-13: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(14)) { --tig-raw-row-count: 14; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(14) > td[colspan]) { --tig-child-14: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(15)) { --tig-raw-row-count: 15; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(15) > td[colspan]) { --tig-child-15: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(16)) { --tig-raw-row-count: 16; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(16) > td[colspan]) { --tig-child-16: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(17)) { --tig-raw-row-count: 17; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(17) > td[colspan]) { --tig-child-17: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(18)) { --tig-raw-row-count: 18; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(18) > td[colspan]) { --tig-child-18: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(19)) { --tig-raw-row-count: 19; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(19) > td[colspan]) { --tig-child-19: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(20)) { --tig-raw-row-count: 20; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(20) > td[colspan]) { --tig-child-20: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(21)) { --tig-raw-row-count: 21; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(21) > td[colspan]) { --tig-child-21: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(22)) { --tig-raw-row-count: 22; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(22) > td[colspan]) { --tig-child-22: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(23)) { --tig-raw-row-count: 23; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(23) > td[colspan]) { --tig-child-23: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(24)) { --tig-raw-row-count: 24; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(24) > td[colspan]) { --tig-child-24: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(25)) { --tig-raw-row-count: 25; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(25) > td[colspan]) { --tig-child-25: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(26)) { --tig-raw-row-count: 26; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(26) > td[colspan]) { --tig-child-26: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(27)) { --tig-raw-row-count: 27; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(27) > td[colspan]) { --tig-child-27: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(28)) { --tig-raw-row-count: 28; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(28) > td[colspan]) { --tig-child-28: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(29)) { --tig-raw-row-count: 29; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(29) > td[colspan]) { --tig-child-29: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(30)) { --tig-raw-row-count: 30; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(30) > td[colspan]) { --tig-child-30: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(31)) { --tig-raw-row-count: 31; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(31) > td[colspan]) { --tig-child-31: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(32)) { --tig-raw-row-count: 32; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(32) > td[colspan]) { --tig-child-32: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(33)) { --tig-raw-row-count: 33; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(33) > td[colspan]) { --tig-child-33: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(34)) { --tig-raw-row-count: 34; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(34) > td[colspan]) { --tig-child-34: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(35)) { --tig-raw-row-count: 35; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(35) > td[colspan]) { --tig-child-35: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(36)) { --tig-raw-row-count: 36; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(36) > td[colspan]) { --tig-child-36: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(37)) { --tig-raw-row-count: 37; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(37) > td[colspan]) { --tig-child-37: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(38)) { --tig-raw-row-count: 38; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(38) > td[colspan]) { --tig-child-38: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(39)) { --tig-raw-row-count: 39; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(39) > td[colspan]) { --tig-child-39: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(40)) { --tig-raw-row-count: 40; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(40) > td[colspan]) { --tig-child-40: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(41)) { --tig-raw-row-count: 41; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(41) > td[colspan]) { --tig-child-41: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(42)) { --tig-raw-row-count: 42; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(42) > td[colspan]) { --tig-child-42: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(43)) { --tig-raw-row-count: 43; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(43) > td[colspan]) { --tig-child-43: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(44)) { --tig-raw-row-count: 44; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(44) > td[colspan]) { --tig-child-44: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(45)) { --tig-raw-row-count: 45; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(45) > td[colspan]) { --tig-child-45: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(46)) { --tig-raw-row-count: 46; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(46) > td[colspan]) { --tig-child-46: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(47)) { --tig-raw-row-count: 47; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(47) > td[colspan]) { --tig-child-47: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(48)) { --tig-raw-row-count: 48; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(48) > td[colspan]) { --tig-child-48: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(49)) { --tig-raw-row-count: 49; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(49) > td[colspan]) { --tig-child-49: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(50)) { --tig-raw-row-count: 50; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(50) > td[colspan]) { --tig-child-50: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(51)) { --tig-raw-row-count: 51; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(51) > td[colspan]) { --tig-child-51: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(52)) { --tig-raw-row-count: 52; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(52) > td[colspan]) { --tig-child-52: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(53)) { --tig-raw-row-count: 53; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(53) > td[colspan]) { --tig-child-53: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(54)) { --tig-raw-row-count: 54; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(54) > td[colspan]) { --tig-child-54: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(55)) { --tig-raw-row-count: 55; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(55) > td[colspan]) { --tig-child-55: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(56)) { --tig-raw-row-count: 56; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(56) > td[colspan]) { --tig-child-56: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(57)) { --tig-raw-row-count: 57; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(57) > td[colspan]) { --tig-child-57: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(58)) { --tig-raw-row-count: 58; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(58) > td[colspan]) { --tig-child-58: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(59)) { --tig-raw-row-count: 59; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(59) > td[colspan]) { --tig-child-59: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(60)) { --tig-raw-row-count: 60; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(60) > td[colspan]) { --tig-child-60: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(61)) { --tig-raw-row-count: 61; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(61) > td[colspan]) { --tig-child-61: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(62)) { --tig-raw-row-count: 62; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(62) > td[colspan]) { --tig-child-62: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(63)) { --tig-raw-row-count: 63; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(63) > td[colspan]) { --tig-child-63: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:last-child:nth-child(64)) { --tig-raw-row-count: 64; }
-    #mainbody > .tborder > table.bordercolor > tbody:has(> tr:nth-child(64) > td[colspan]) { --tig-child-64: 1; }
-    #mainbody > .tborder > table.bordercolor > tbody {
-        --tig-board-count: calc(var(--tig-raw-row-count)
-            - var(--tig-child-1, 0)
-            - var(--tig-child-2, 0)
-            - var(--tig-child-3, 0)
-            - var(--tig-child-4, 0)
-            - var(--tig-child-5, 0)
-            - var(--tig-child-6, 0)
-            - var(--tig-child-7, 0)
-            - var(--tig-child-8, 0)
-            - var(--tig-child-9, 0)
-            - var(--tig-child-10, 0)
-            - var(--tig-child-11, 0)
-            - var(--tig-child-12, 0)
-            - var(--tig-child-13, 0)
-            - var(--tig-child-14, 0)
-            - var(--tig-child-15, 0)
-            - var(--tig-child-16, 0)
-            - var(--tig-child-17, 0)
-            - var(--tig-child-18, 0)
-            - var(--tig-child-19, 0)
-            - var(--tig-child-20, 0)
-            - var(--tig-child-21, 0)
-            - var(--tig-child-22, 0)
-            - var(--tig-child-23, 0)
-            - var(--tig-child-24, 0)
-            - var(--tig-child-25, 0)
-            - var(--tig-child-26, 0)
-            - var(--tig-child-27, 0)
-            - var(--tig-child-28, 0)
-            - var(--tig-child-29, 0)
-            - var(--tig-child-30, 0)
-            - var(--tig-child-31, 0)
-            - var(--tig-child-32, 0)
-            - var(--tig-child-33, 0)
-            - var(--tig-child-34, 0)
-            - var(--tig-child-35, 0)
-            - var(--tig-child-36, 0)
-            - var(--tig-child-37, 0)
-            - var(--tig-child-38, 0)
-            - var(--tig-child-39, 0)
-            - var(--tig-child-40, 0)
-            - var(--tig-child-41, 0)
-            - var(--tig-child-42, 0)
-            - var(--tig-child-43, 0)
-            - var(--tig-child-44, 0)
-            - var(--tig-child-45, 0)
-            - var(--tig-child-46, 0)
-            - var(--tig-child-47, 0)
-            - var(--tig-child-48, 0)
-            - var(--tig-child-49, 0)
-            - var(--tig-child-50, 0)
-            - var(--tig-child-51, 0)
-            - var(--tig-child-52, 0)
-            - var(--tig-child-53, 0)
-            - var(--tig-child-54, 0)
-            - var(--tig-child-55, 0)
-            - var(--tig-child-56, 0)
-            - var(--tig-child-57, 0)
-            - var(--tig-child-58, 0)
-            - var(--tig-child-59, 0)
-            - var(--tig-child-60, 0)
-            - var(--tig-child-61, 0)
-            - var(--tig-child-62, 0)
-            - var(--tig-child-63, 0)
-            - var(--tig-child-64, 0));
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-1: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-1-1: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-1: 2; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-1-2: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-1: 3; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-1-3: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-1: 4; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-1-4: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-1: 5; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-1-5: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-1: 6; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-1-6: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-1: 7; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-1-7: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-1: 8; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-1-8: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-1: 9; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-1-9: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-1: 10; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-1-10: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-1: 11; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-1-11: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-1: 12; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-1-12: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-1: 13; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-1-13: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-1: 14; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-1-14: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-1: 15; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-1-15: 1; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-1: 16; }
+    #mainbody:has(> .tborder:nth-child(1 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-1-16: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-2: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-2-1: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-2: 2; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-2-2: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-2: 3; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-2-3: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-2: 4; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-2-4: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-2: 5; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-2-5: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-2: 6; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-2-6: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-2: 7; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-2-7: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-2: 8; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-2-8: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-2: 9; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-2-9: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-2: 10; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-2-10: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-2: 11; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-2-11: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-2: 12; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-2-12: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-2: 13; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-2-13: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-2: 14; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-2-14: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-2: 15; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-2-15: 1; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-2: 16; }
+    #mainbody:has(> .tborder:nth-child(2 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-2-16: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-3: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-3-1: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-3: 2; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-3-2: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-3: 3; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-3-3: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-3: 4; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-3-4: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-3: 5; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-3-5: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-3: 6; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-3-6: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-3: 7; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-3-7: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-3: 8; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-3-8: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-3: 9; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-3-9: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-3: 10; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-3-10: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-3: 11; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-3-11: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-3: 12; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-3-12: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-3: 13; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-3-13: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-3: 14; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-3-14: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-3: 15; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-3-15: 1; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-3: 16; }
+    #mainbody:has(> .tborder:nth-child(3 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-3-16: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-4: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-4-1: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-4: 2; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-4-2: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-4: 3; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-4-3: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-4: 4; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-4-4: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-4: 5; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-4-5: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-4: 6; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-4-6: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-4: 7; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-4-7: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-4: 8; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-4-8: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-4: 9; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-4-9: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-4: 10; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-4-10: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-4: 11; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-4-11: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-4: 12; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-4-12: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-4: 13; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-4-13: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-4: 14; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-4-14: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-4: 15; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-4-15: 1; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-4: 16; }
+    #mainbody:has(> .tborder:nth-child(4 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-4-16: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-5: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-5-1: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-5: 2; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-5-2: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-5: 3; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-5-3: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-5: 4; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-5-4: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-5: 5; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-5-5: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-5: 6; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-5-6: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-5: 7; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-5-7: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-5: 8; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-5-8: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-5: 9; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-5-9: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-5: 10; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-5-10: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-5: 11; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-5-11: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-5: 12; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-5-12: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-5: 13; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-5-13: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-5: 14; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-5-14: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-5: 15; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-5-15: 1; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-5: 16; }
+    #mainbody:has(> .tborder:nth-child(5 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-5-16: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-6: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-6-1: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-6: 2; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-6-2: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-6: 3; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-6-3: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-6: 4; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-6-4: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-6: 5; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-6-5: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-6: 6; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-6-6: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-6: 7; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-6-7: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-6: 8; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-6-8: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-6: 9; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-6-9: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-6: 10; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-6-10: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-6: 11; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-6-11: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-6: 12; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-6-12: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-6: 13; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-6-13: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-6: 14; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-6-14: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-6: 15; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-6-15: 1; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-6: 16; }
+    #mainbody:has(> .tborder:nth-child(6 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-6-16: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-7: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-7-1: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-7: 2; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-7-2: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-7: 3; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-7-3: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-7: 4; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-7-4: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-7: 5; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-7-5: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-7: 6; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-7-6: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-7: 7; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-7-7: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-7: 8; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-7-8: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-7: 9; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-7-9: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-7: 10; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-7-10: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-7: 11; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-7-11: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-7: 12; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-7-12: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-7: 13; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-7-13: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-7: 14; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-7-14: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-7: 15; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-7-15: 1; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-7: 16; }
+    #mainbody:has(> .tborder:nth-child(7 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-7-16: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(1)) { --tig-raw-8: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(1) > td[colspan]) { --tig-child-8-1: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(2)) { --tig-raw-8: 2; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(2) > td[colspan]) { --tig-child-8-2: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(3)) { --tig-raw-8: 3; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(3) > td[colspan]) { --tig-child-8-3: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(4)) { --tig-raw-8: 4; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(4) > td[colspan]) { --tig-child-8-4: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(5)) { --tig-raw-8: 5; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(5) > td[colspan]) { --tig-child-8-5: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(6)) { --tig-raw-8: 6; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(6) > td[colspan]) { --tig-child-8-6: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(7)) { --tig-raw-8: 7; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(7) > td[colspan]) { --tig-child-8-7: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(8)) { --tig-raw-8: 8; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(8) > td[colspan]) { --tig-child-8-8: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(9)) { --tig-raw-8: 9; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(9) > td[colspan]) { --tig-child-8-9: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(10)) { --tig-raw-8: 10; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(10) > td[colspan]) { --tig-child-8-10: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(11)) { --tig-raw-8: 11; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(11) > td[colspan]) { --tig-child-8-11: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(12)) { --tig-raw-8: 12; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(12) > td[colspan]) { --tig-child-8-12: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(13)) { --tig-raw-8: 13; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(13) > td[colspan]) { --tig-child-8-13: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(14)) { --tig-raw-8: 14; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(14) > td[colspan]) { --tig-child-8-14: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(15)) { --tig-raw-8: 15; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(15) > td[colspan]) { --tig-child-8-15: 1; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:last-child:nth-child(16)) { --tig-raw-8: 16; }
+    #mainbody:has(> .tborder:nth-child(8 of .tborder) > :is(.catbg, .catbg2) + table.bordercolor > tbody > tr:nth-child(16) > td[colspan]) { --tig-child-8-16: 1; }
+    #mainbody:has(> .tborder > :is(.catbg, .catbg2) + table.bordercolor) {
+        --tig-count-1: calc(var(--tig-raw-1, 0) - var(--tig-child-1-1, 0) - var(--tig-child-1-2, 0) - var(--tig-child-1-3, 0) - var(--tig-child-1-4, 0) - var(--tig-child-1-5, 0) - var(--tig-child-1-6, 0) - var(--tig-child-1-7, 0) - var(--tig-child-1-8, 0) - var(--tig-child-1-9, 0) - var(--tig-child-1-10, 0) - var(--tig-child-1-11, 0) - var(--tig-child-1-12, 0) - var(--tig-child-1-13, 0) - var(--tig-child-1-14, 0) - var(--tig-child-1-15, 0) - var(--tig-child-1-16, 0));
+        --tig-offset-1: calc(0);
+        --tig-count-2: calc(var(--tig-raw-2, 0) - var(--tig-child-2-1, 0) - var(--tig-child-2-2, 0) - var(--tig-child-2-3, 0) - var(--tig-child-2-4, 0) - var(--tig-child-2-5, 0) - var(--tig-child-2-6, 0) - var(--tig-child-2-7, 0) - var(--tig-child-2-8, 0) - var(--tig-child-2-9, 0) - var(--tig-child-2-10, 0) - var(--tig-child-2-11, 0) - var(--tig-child-2-12, 0) - var(--tig-child-2-13, 0) - var(--tig-child-2-14, 0) - var(--tig-child-2-15, 0) - var(--tig-child-2-16, 0));
+        --tig-offset-2: calc(var(--tig-count-1));
+        --tig-count-3: calc(var(--tig-raw-3, 0) - var(--tig-child-3-1, 0) - var(--tig-child-3-2, 0) - var(--tig-child-3-3, 0) - var(--tig-child-3-4, 0) - var(--tig-child-3-5, 0) - var(--tig-child-3-6, 0) - var(--tig-child-3-7, 0) - var(--tig-child-3-8, 0) - var(--tig-child-3-9, 0) - var(--tig-child-3-10, 0) - var(--tig-child-3-11, 0) - var(--tig-child-3-12, 0) - var(--tig-child-3-13, 0) - var(--tig-child-3-14, 0) - var(--tig-child-3-15, 0) - var(--tig-child-3-16, 0));
+        --tig-offset-3: calc(var(--tig-count-1) + var(--tig-count-2));
+        --tig-count-4: calc(var(--tig-raw-4, 0) - var(--tig-child-4-1, 0) - var(--tig-child-4-2, 0) - var(--tig-child-4-3, 0) - var(--tig-child-4-4, 0) - var(--tig-child-4-5, 0) - var(--tig-child-4-6, 0) - var(--tig-child-4-7, 0) - var(--tig-child-4-8, 0) - var(--tig-child-4-9, 0) - var(--tig-child-4-10, 0) - var(--tig-child-4-11, 0) - var(--tig-child-4-12, 0) - var(--tig-child-4-13, 0) - var(--tig-child-4-14, 0) - var(--tig-child-4-15, 0) - var(--tig-child-4-16, 0));
+        --tig-offset-4: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3));
+        --tig-count-5: calc(var(--tig-raw-5, 0) - var(--tig-child-5-1, 0) - var(--tig-child-5-2, 0) - var(--tig-child-5-3, 0) - var(--tig-child-5-4, 0) - var(--tig-child-5-5, 0) - var(--tig-child-5-6, 0) - var(--tig-child-5-7, 0) - var(--tig-child-5-8, 0) - var(--tig-child-5-9, 0) - var(--tig-child-5-10, 0) - var(--tig-child-5-11, 0) - var(--tig-child-5-12, 0) - var(--tig-child-5-13, 0) - var(--tig-child-5-14, 0) - var(--tig-child-5-15, 0) - var(--tig-child-5-16, 0));
+        --tig-offset-5: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3) + var(--tig-count-4));
+        --tig-count-6: calc(var(--tig-raw-6, 0) - var(--tig-child-6-1, 0) - var(--tig-child-6-2, 0) - var(--tig-child-6-3, 0) - var(--tig-child-6-4, 0) - var(--tig-child-6-5, 0) - var(--tig-child-6-6, 0) - var(--tig-child-6-7, 0) - var(--tig-child-6-8, 0) - var(--tig-child-6-9, 0) - var(--tig-child-6-10, 0) - var(--tig-child-6-11, 0) - var(--tig-child-6-12, 0) - var(--tig-child-6-13, 0) - var(--tig-child-6-14, 0) - var(--tig-child-6-15, 0) - var(--tig-child-6-16, 0));
+        --tig-offset-6: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3) + var(--tig-count-4) + var(--tig-count-5));
+        --tig-count-7: calc(var(--tig-raw-7, 0) - var(--tig-child-7-1, 0) - var(--tig-child-7-2, 0) - var(--tig-child-7-3, 0) - var(--tig-child-7-4, 0) - var(--tig-child-7-5, 0) - var(--tig-child-7-6, 0) - var(--tig-child-7-7, 0) - var(--tig-child-7-8, 0) - var(--tig-child-7-9, 0) - var(--tig-child-7-10, 0) - var(--tig-child-7-11, 0) - var(--tig-child-7-12, 0) - var(--tig-child-7-13, 0) - var(--tig-child-7-14, 0) - var(--tig-child-7-15, 0) - var(--tig-child-7-16, 0));
+        --tig-offset-7: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3) + var(--tig-count-4) + var(--tig-count-5) + var(--tig-count-6));
+        --tig-count-8: calc(var(--tig-raw-8, 0) - var(--tig-child-8-1, 0) - var(--tig-child-8-2, 0) - var(--tig-child-8-3, 0) - var(--tig-child-8-4, 0) - var(--tig-child-8-5, 0) - var(--tig-child-8-6, 0) - var(--tig-child-8-7, 0) - var(--tig-child-8-8, 0) - var(--tig-child-8-9, 0) - var(--tig-child-8-10, 0) - var(--tig-child-8-11, 0) - var(--tig-child-8-12, 0) - var(--tig-child-8-13, 0) - var(--tig-child-8-14, 0) - var(--tig-child-8-15, 0) - var(--tig-child-8-16, 0));
+        --tig-offset-8: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3) + var(--tig-count-4) + var(--tig-count-5) + var(--tig-count-6) + var(--tig-count-7));
+        --tig-board-count: calc(var(--tig-count-1) + var(--tig-count-2) + var(--tig-count-3) + var(--tig-count-4) + var(--tig-count-5) + var(--tig-count-6) + var(--tig-count-7) + var(--tig-count-8));
     }
+    #mainbody > .tborder:nth-child(1 of .tborder) { --tig-slot-offset: var(--tig-offset-1); }
+    #mainbody > .tborder:nth-child(2 of .tborder) { --tig-slot-offset: var(--tig-offset-2); }
+    #mainbody > .tborder:nth-child(3 of .tborder) { --tig-slot-offset: var(--tig-offset-3); }
+    #mainbody > .tborder:nth-child(4 of .tborder) { --tig-slot-offset: var(--tig-offset-4); }
+    #mainbody > .tborder:nth-child(5 of .tborder) { --tig-slot-offset: var(--tig-offset-5); }
+    #mainbody > .tborder:nth-child(6 of .tborder) { --tig-slot-offset: var(--tig-offset-6); }
+    #mainbody > .tborder:nth-child(7 of .tborder) { --tig-slot-offset: var(--tig-offset-7); }
+    #mainbody > .tborder:nth-child(8 of .tborder) { --tig-slot-offset: var(--tig-offset-8); }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="4"]) { --tig-section-label: "Community"; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="2"]) { --tig-section-label: "Developer"; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="8"]) { --tig-section-label: "Jobs"; }
+    #mainbody > .tborder:has(> :is(.catbg, .catbg2) > a[name="1"]) { --tig-section-label: "Player"; }
 
     /* Board listing: consistent metadata columns; compact cards below 1150px. */
     #quickModForm > .tborder2 {

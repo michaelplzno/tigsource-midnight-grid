@@ -4,7 +4,7 @@ A dark, responsive theme for the [TIGSource forums](https://forums.tigsource.com
 
 **[Install Midnight Grid](https://raw.githubusercontent.com/michaelplzno/tigsource-midnight-grid/main/tigsource-midnight-grid.user.css)** · [Report a bug](https://github.com/michaelplzno/tigsource-midnight-grid/issues)
 
-Midnight Grid gives each forum board its own fixed-height tile, with lightweight section headings, readable posts, and embedded SVG interface icons. Tiles fill down the columns first: three columns on wide screens, two on medium screens, and one on smaller screens. Each tile is 400px tall, with room for the supplied board descriptions, latest-post details, and child-board links without internal scrolling. It uses system fonts and adds no remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
+Midnight Grid puts every board in one continuous grid, with the section name on each tile. Tiles fill down the columns first: three columns on wide screens, two on medium screens, and one on smaller screens. Compact, fixed 240px tiles keep the supplied descriptions, statistics, latest-post details, and child-board links visible without internal scrolling. It uses system fonts and embedded SVG interface icons, with no added remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
 
 ## Install
 
@@ -39,11 +39,11 @@ Edit the style in Stylus and find the first `:root` block:
 
 ```css
 --tig-width: 1600px;
---tig-tile-height: 400px;
+--tig-tile-height: 240px;
 --tig-text-scale: 1.1;
 ```
 
-`--tig-width` controls the maximum content width. `--tig-tile-height` sets one fixed height for all board tiles. The 400px default includes extra room above the tallest supplied fixture at the tested widths. If you increase text sizing, check the fixtures and increase the tile height if needed to keep everything visible. `--tig-text-scale` controls text sizing; for example, `1.0` is smaller than the default `1.1`. Color variables are nearby. Local edits may be replaced by a future update, so keep a copy of your changes.
+`--tig-width` controls the maximum content width. `--tig-tile-height` sets one fixed height for all board tiles. The compact 240px default fits the supplied fixtures at the tested widths. If you increase text sizing, check the fixtures and increase the tile height if needed to keep everything visible. `--tig-text-scale` controls text sizing; for example, `1.0` is smaller than the default `1.1`. Color variables are nearby. Local edits may be replaced by a future update, so keep a copy of your changes.
 
 ## Compatibility
 

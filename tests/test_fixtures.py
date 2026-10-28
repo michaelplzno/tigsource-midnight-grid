@@ -26,6 +26,25 @@ def nodes(node):
 
 
 class FixtureContentTests(unittest.TestCase):
+    def test_index_fits_the_continuous_grid_slot_bindings(self):
+        document = Document((FIXTURES / "index.html").read_text(encoding="utf-8"))
+        main = next(node for node in nodes(document.root) if node.attrs.get("id") == "mainbody")
+        panels = [node for node in main.children if isinstance(node, Node) and "tborder" in (node.attrs.get("class") or "").split()]
+        for panel_index, panel in enumerate(panels, start=1):
+            board_links = [node for node in nodes(panel) if node.tag == "a" and (node.attrs.get("name") or "").startswith("b")]
+            if not board_links:
+                continue
+            with self.subTest(panel=panel_index):
+                self.assertLessEqual(panel_index, 8, "Extend global section counters before adding this fixture")
+                table = next(node for node in panel.children if isinstance(node, Node) and node.tag == "table")
+                body = next(node for node in table.children if isinstance(node, Node) and node.tag == "tbody")
+                rows = [node for node in body.children if isinstance(node, Node) and node.tag == "tr"]
+                self.assertLessEqual(len(rows), 16, "Extend raw-row counters before adding this fixture")
+                heading = next(node for node in panel.children if isinstance(node, Node) and node.attrs.get("class") in ("catbg", "catbg2"))
+                section_ids = [node.attrs["name"] for node in nodes(heading) if node.tag == "a" and node.attrs.get("name")]
+                self.assertTrue(section_ids)
+                self.assertTrue(set(section_ids) <= {"1", "2", "4", "8"}, "Add a label binding for the new section")
+
     def test_utf8_capture_without_a_mime_charset(self):
         message = EmailMessage()
         message["Content-Type"] = "text/html"
