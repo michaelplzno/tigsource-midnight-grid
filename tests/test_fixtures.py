@@ -11,7 +11,7 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
-from tools.build_fixtures import Document, Node, decode_text
+from tools.build_fixtures import Builder, Document, Node, PUBLIC_SECTION_IDS, decode_text
 from tools import preview
 
 
@@ -43,7 +43,13 @@ class FixtureContentTests(unittest.TestCase):
                 heading = next(node for node in panel.children if isinstance(node, Node) and node.attrs.get("class") in ("catbg", "catbg2"))
                 section_ids = [node.attrs["name"] for node in nodes(heading) if node.tag == "a" and node.attrs.get("name")]
                 self.assertTrue(section_ids)
-                self.assertTrue(set(section_ids) <= {"1", "2", "4", "8"}, "Add a label binding for the new section")
+                self.assertTrue(set(section_ids) <= PUBLIC_SECTION_IDS, "Fixtures may contain only allowlisted public sections")
+
+    def test_importer_excludes_unlisted_sections_before_copying_assets(self):
+        builder = object.__new__(Builder)
+        document = Document('<div class="tborder"><div class="catbg2"><a name="999">Unlisted section</a></div>'
+                            '<table><tbody><tr><td><img src="must-not-be-copied.png"></td></tr></tbody></table></div>')
+        self.assertIsNone(builder.clean(document.root.children[0]))
 
     def test_utf8_capture_without_a_mime_charset(self):
         message = EmailMessage()

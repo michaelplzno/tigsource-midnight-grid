@@ -6,6 +6,10 @@ A dark, responsive theme for the [TIGSource forums](https://forums.tigsource.com
 
 Midnight Grid puts every board in one continuous grid, with the section name on each tile. Tiles fill down the columns first: four columns from 1800px, three from 1440px, two from 1000px, and one below that. Compact, fixed 240px tiles keep the supplied descriptions, statistics, latest-post details, and child-board links visible without internal scrolling. Post and topic counts sit directly under each board title, and latest-post details start at the same height across all tiles. Muted section colors distinguish Community (blue), Developer (sage), Jobs (amber), and Player (lavender), alongside their text labels. The original joystick icons appear at full size. It uses system fonts and embedded SVG interface icons, with no added remote fonts, scripts, analytics, or image downloads. The forum's existing logo, avatars, and posted artwork remain part of the site.
 
+![Midnight Grid forum layout](docs/preview.png)
+
+*Version 1.6.1, shown with anonymized offline forum data.*
+
 ## Install
 
 1. Install the **Stylus** extension for your browser: [Chrome / Edge / Brave and other Chromium browsers](https://chromewebstore.google.com/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne) or [Firefox](https://addons.mozilla.org/firefox/addon/styl-us/). These are the store listings linked by the [official Stylus project](https://github.com/openstyles/stylus#releases).

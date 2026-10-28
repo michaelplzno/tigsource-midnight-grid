@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1 — 2026-10-28
+
+- Refresh documentation, the preview, and fixture validation.
+- Limit fixture imports to the public forum sections.
+
 ## 1.6.0 — 2026-10-28
 
 - Put post and topic counts directly beneath each board title, above the description.
