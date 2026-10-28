@@ -1,0 +1,10 @@
+# Original Stylus backups can contain settings and unrelated styles.
+stylus-*.json
+dist/
+
+# Local editor and OS files.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.tmp

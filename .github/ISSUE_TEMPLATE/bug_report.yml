@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a layout, accessibility, or browser compatibility issue.
+title: "[Bug]: "
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Forum page URL
+      description: Share a public URL or describe the page type. Do not include session tokens or private-message URLs.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, Stylus, and theme versions
+      placeholder: "Edge version, Stylus version, Midnight Grid 1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: viewport
+    attributes:
+      label: Viewport width and browser zoom
+      placeholder: "1280px wide, 100% zoom"
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened, and what did you expect?
+      description: Include steps to reproduce. Check with other TIGSource styles disabled.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Remove private messages and personal information before uploading.
