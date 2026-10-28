@@ -13,20 +13,50 @@
     const boardRows = [...document.querySelectorAll('#mainbody > .tborder > table.bordercolor:has(a[name^="b"]) > tbody > tr:not(:has(> td[colspan]))')];
     const searchControls = [...document.querySelectorAll('#showcase form input[type="text"], #showcase form input[type="submit"]')];
     const sectionBoxes = sections.map(element => element.getBoundingClientRect());
-    const categoryBoxes = categories.map(element => element.getBoundingClientRect());
-    const gridRows = [];
-    for (const rect of categoryBoxes) {
-        let row = gridRows.find(row => Math.abs(row[0].top - rect.top) <= 1);
-        if (!row) { row = []; gridRows.push(row); }
-        row.push(rect);
-    }
     const expectedColumns = innerWidth >= 1440 ? 3 : innerWidth >= 1000 ? 2 : 1;
-    const alignedSections = categories.length ? gridRows.every((row, index) =>
-        row.every((rect, column) => Math.abs(rect.bottom - row[0].bottom) <= 1 &&
-            Math.abs(rect.width - categoryBoxes[0].width) <= 1 &&
-            (!column || Math.abs(rect.left - row[column - 1].right - 20) <= 1)) &&
-        (!index || Math.abs(row[0].top - gridRows[index - 1][0].bottom - 20) <= 1)
-    ) : sectionBoxes.every((rect, index) => !index || (
+    const tileGrids = categories.map(category => category.querySelector(':scope > table.bordercolor > tbody'));
+    const tilesFor = grid => [...grid.children].filter(row => !row.querySelector(':scope > td[colspan]'));
+    const tiles = tileGrids.flatMap(tilesFor);
+    const tileHeights = tiles.map(tile => tile.getBoundingClientRect().height);
+    const expectedTileHeight = +getComputedStyle(document.documentElement).getPropertyValue('--tig-tile-height').trim().replace('px', '');
+    const tileProblems = [];
+    for (const grid of tileGrids) {
+        const members = tilesFor(grid);
+        const rowCount = Math.ceil(members.length / expectedColumns);
+        const tracks = getComputedStyle(grid).gridTemplateColumns.trim().split(/\s+/).length;
+        if (tracks !== expectedColumns) tileProblems.push('Incorrect column count');
+        members.forEach((tile, index) => {
+            const rect = tile.getBoundingClientRect();
+            const style = getComputedStyle(tile);
+            const column = Math.floor(index / rowCount);
+            const row = index % rowCount;
+            if (Math.abs(rect.height - expectedTileHeight) > 1) tileProblems.push('Tile does not match the configured fixed height');
+            if (Number(style.gridColumnStart) !== column + 1 || Number(style.gridRowStart) !== row + 1)
+                tileProblems.push('Incorrect column-major order');
+            if (row) {
+                const above = members[index - 1].getBoundingClientRect();
+                if (Math.abs(rect.top - above.bottom - 20) > 1) tileProblems.push('Incorrect vertical gutter');
+            }
+            if (column) {
+                const left = members[index - rowCount].getBoundingClientRect();
+                if (Math.abs(rect.left - left.right - 20) > 1) tileProblems.push('Incorrect horizontal gutter');
+            }
+            if (tile.scrollHeight > tile.clientHeight + 2) tileProblems.push('Tile content exceeds its height');
+            for (const cell of tile.children) {
+                const bounds = cell.getBoundingClientRect();
+                if (bounds.top < rect.top || bounds.bottom > rect.bottom || bounds.left < rect.left || bounds.right > rect.right)
+                    tileProblems.push('Cell extends outside its tile');
+            }
+            const footer = tile.nextElementSibling;
+            if (footer?.querySelector(':scope > td[colspan]')) {
+                const bounds = footer.getBoundingClientRect();
+                const metadata = tile.children[3].getBoundingClientRect();
+                if (bounds.left < rect.left || bounds.right > rect.right || bounds.bottom > rect.bottom + 1 ||
+                    bounds.top < metadata.bottom + 8) tileProblems.push('Child-board footer does not fit its parent tile');
+            }
+        });
+    }
+    const alignedSections = categories.length ? tileProblems.length === 0 : sectionBoxes.every((rect, index) => !index || (
         Math.abs(rect.left - sectionBoxes[0].left) <= 1 &&
         Math.abs(rect.right - sectionBoxes[0].right) <= 1 &&
         rect.top >= sectionBoxes[index - 1].bottom
@@ -50,9 +80,12 @@
         themeActive: getComputedStyle(document.documentElement).getPropertyValue('--tig-bg').trim() !== '',
         documentOverflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
         categoryCount: categories.length,
-        categoryColumns: categories.length ? getComputedStyle(document.querySelector('#mainbody')).gridTemplateColumns : null,
+        categoryColumns: tileGrids.length ? getComputedStyle(tileGrids[0]).gridTemplateColumns : null,
         expectedCategoryColumns: categories.length ? expectedColumns : null,
-        actualCategoryColumns: categories.length ? Math.max(...gridRows.map(row => row.length)) : null,
+        actualCategoryColumns: tileGrids.length ? getComputedStyle(tileGrids[0]).gridTemplateColumns.trim().split(/\s+/).length : null,
+        boardTileCount: tiles.length,
+        tileHeights: [...new Set(tileHeights.map(height => Math.round(height)))],
+        tileProblems,
         alignedSections,
         boardRowCount: boardRows.length,
         minimumBoardInfoWidth: infoWidths.length ? Math.round(Math.min(...infoWidths)) : null,

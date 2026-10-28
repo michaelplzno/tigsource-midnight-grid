@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 — 2026-10-28
+
+- Make each board an independent tile; categories are lightweight section headings.
+- Use column-major order within each section with three, two, or one columns.
+- Set all tiles to 400px, above the largest natural tile measured across the supplied fixtures and tested widths.
+- Keep child-board links inside their parent tile's footer without adding internal scrolling.
+- Check tile heights, content bounds, child-footer placement, and column-major order.
+
 ## 1.2.0 — 2026-10-28
 
 - Restore the category-card grid: three columns from 1440px, two from 1000px, and one below 1000px.
